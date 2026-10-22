@@ -1,14 +1,14 @@
 # Built by Akshat Gupta · About the Builder
 
-A lightweight, single-page **"About the Builder"** website for **Akshat Gupta**.
+A lightweight, single-page **"About the Builder"** website for **Akshat Gupta**, linked directly from the footers or about dialogs of software built by Akshat via `?ref=<slug>`.
 
-This site is linked from the footer, settings, or about modal of software engineered by Akshat (`"Built by Akshat Gupta ↗"`). Its visitors are end-users, clients, collaborators, and curious engineers—**not recruiters**.
+Visitors are users, clients, collaborators, and curious engineers—**not recruiters**.
 
 It establishes credibility in ~30 seconds:
-- **Who built this**: Full-stack developer & CS undergrad at BMS College of Engineering, Bengaluru.
+- **Who built this**: Full-stack developer & CS undergrad (IoT, Cybersecurity & Blockchain) at BMS College of Engineering, Bengaluru.
 - **Where they have worked**: Full-stack developer intern at **Orange Taxi** (real-time dispatch engine on Supabase Realtime, UPI dynamic QR payments, PWA).
 - **What else they have engineered**: Autonomous Search and Rescue Robot, Animal Detection on Locomotive Tracks.
-- **Where to reach out**: Direct email, GitHub, and LinkedIn.
+- **Where to reach out**: Direct email, GitHub, LinkedIn, and prefilled issue feedback.
 
 Styled in a calm, confident indie-zine aesthetic: cream (`#FFF6E5`) and ink (`#1A1A1A`) palette, 2px borders, hard offset shadows, custom doodle illustrations (Taxi, Robot, Train, Wheelchair), and zero job-hunting clutter (no "hire me", no resume download, no buzzwords).
 
@@ -22,7 +22,6 @@ Styled in a calm, confident indie-zine aesthetic: cream (`#FFF6E5`) and ink (`#1
 
 ### 2. Installation
 ```bash
-cd Built-by-Akshat
 npm install
 ```
 
@@ -44,6 +43,11 @@ npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+Test with product refs:
+- [http://localhost:3000/?ref=orange-taxi](http://localhost:3000/?ref=orange-taxi)
+- [http://localhost:3000/?ref=autonomous-rescue-robot](http://localhost:3000/?ref=autonomous-rescue-robot)
+- [http://localhost:3000/?ref=animal-detection](http://localhost:3000/?ref=animal-detection)
+
 ### 5. Production Build & Linting
 ```bash
 npm run lint
@@ -52,29 +56,84 @@ npm run build
 
 ---
 
-## ✏️ Updating Profile Content
+## 📦 How to Add a Product to the Registry
 
-All content is centralized in a single typed file: [`data/profile.ts`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/data/profile.ts).
+All software and hardware systems are defined in [`data/products.ts`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/data/products.ts).
 
-You can edit your:
-- Tagline & intro statement
-- Experience timeline entry & tech stack
-- Things I've Built cards & links
-- Skills matrix (grouped text list)
-- Education & Recognition honors
-- Contact email & social URLs
+To register a new product:
+1. Open [`data/products.ts`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/data/products.ts).
+2. Add an entry conforming to the `Product` type:
+
+```typescript
+"my-app": {
+  slug: "my-app",
+  name: "My App Name",
+  oneLiner: "One-line punchy description of what it does.",
+  status: "live", // "live" | "pre-launch" | "prototype"
+  role: "Full-Stack Developer",
+  stack: ["TypeScript", "Next.js", "PostgreSQL"],
+  builtWith: [
+    {
+      tech: "Next.js & React",
+      plainEnglish: "User-facing dashboard and responsive UI",
+    },
+    {
+      tech: "PostgreSQL",
+      plainEnglish: "Relational persistence and real-time triggers",
+    },
+  ],
+  builderNote: "[PLACEHOLDER]", // Replace with a 1-sentence real engineering decision
+  productUrl: "https://myapp.com", // Optional
+  repoUrl: "https://github.com/akshat0709/myapp", // Optional
+  feedbackSubject: "[My App Name] Feedback",
+  ogTagline: "Clean, reliable software engineered by Akshat Gupta.",
+},
+```
+
+When visitors land on `/?ref=my-app`:
+- An **"About this product"** card appears under the hero with the status chip, plain-English tech breakdown, and direct link.
+- Social sharing displays `"<Product> was built by Akshat Gupta."` with dynamic OG image and title.
+- The footer CTA offers `"Found an issue in <Product>? Tell me"`.
+- If the visitor hits an invalid route, the 404 page provides a `"Return to <Product>"` button.
+
+---
+
+## 🔗 How to Link From Your Apps
+
+Add a footer link or "About" button in your software pointing to:
+```
+<SITE_URL>/?ref=<slug>
+```
+Example: `https://builtby.akshatgupta.dev/?ref=orange-taxi`
+
+If no `?ref` is passed, the site displays the clean base builder profile. Unknown refs and invalid query characters are strictly sanitized and never rendered.
+
+---
+
+## 📱 How to Generate QR Codes
+
+To generate offline / print QR codes pointing to `/?ref=qr-<slug>`:
+
+```bash
+npm run qr
+```
+
+This runs `scripts/qr.mjs` and creates high-contrast PNGs in `public/qr/<slug>.png`:
+- `public/qr/orange-taxi.png`
+- `public/qr/autonomous-rescue-robot.png`
+- `public/qr/animal-detection.png`
+
+The scanner URL is automatically mapped so `?ref=qr-orange-taxi` resolves to `orange-taxi`.
 
 ---
 
 ## 📋 Copy-Paste Footer Snippets for Your Other Software
 
-Place either of these snippets into the footer or about dialog of software you ship:
-
-### Option A: HTML / Inline CSS (Framework Agnostic)
+### Option A: HTML / Inline CSS (Universal / Vanilla)
 Found in [`snippets/BuiltByBadge.html`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/snippets/BuiltByBadge.html):
 ```html
 <a
-  href="https://builtby.akshatgupta.dev"
+  href="https://builtby.akshatgupta.dev/?ref=orange-taxi"
   target="_blank"
   rel="noopener"
   style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;font-family:ui-monospace,monospace;font-size:12px;font-weight:600;color:#1a1a1a;background-color:#fff6e5;border:2px solid #1a1a1a;border-radius:9999px;box-shadow:2px 2px 0px #1a1a1a;text-decoration:none;"
@@ -93,7 +152,7 @@ import { BuiltByBadge } from "@/components/BuiltByBadge";
 export function Footer() {
   return (
     <footer>
-      <BuiltByBadge />
+      <BuiltByBadge refSlug="orange-taxi" />
     </footer>
   );
 }
@@ -103,29 +162,31 @@ export function Footer() {
 
 ## 📝 List of Placeholders to Fill In
 
-Search for `[PLACEHOLDER]` or review these items in [`data/profile.ts`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/data/profile.ts) when ready:
+Search for `[PLACEHOLDER]` or review these items in [`data/products.ts`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/data/products.ts) and [`data/profile.ts`](file:///Users/akshatgupta/Desktop/Akshat/Built-by-Akshat/data/profile.ts):
 
-1. **`experience[0].period`**:
+1. **`orange-taxi` Builder Note** (`data/products.ts`):
+   - Current: `"[PLACEHOLDER]"`
+   - Action: Add a short first-person sentence about a real engineering decision (e.g., why Supabase Realtime was selected for the dispatch engine over custom WebSockets).
+2. **`autonomous-rescue-robot` Builder Note** (`data/products.ts`):
+   - Current: `"[PLACEHOLDER]"`
+   - Action: Add a short first-person sentence about an engineering decision (e.g., choosing low-latency microcontrollers over a single board computer for sensor acquisition).
+3. **`animal-detection` Builder Note** (`data/products.ts`):
+   - Current: `"[PLACEHOLDER]"`
+   - Action: Add a short first-person sentence about an engineering decision (e.g., optimizing edge YOLO inference latency for railway cameras).
+4. **`experience[0].period`** (`data/profile.ts`):
    - Current: `"Sep 2026 - [Dec 2026 / Present]"`
-   - Action: Update `[Dec 2026 / Present]` with your actual end date or `"Present"`.
-2. **`builtProjects[1].link`** (Autonomous Search and Rescue Robot):
-   - Current: `"[RESCUE_ROBOT_REPO_URL]"`
-   - Action: Replace with your GitHub repository link or project demo link.
-3. **`builtProjects[2].link`** (Animal Detection in Locomotive Tracks):
-   - Current: `"[ANIMAL_DETECTION_REPO_URL]"`
-   - Action: Replace with your GitHub repository link or paper/demo link.
-4. **`portfolioUrl`**:
-   - Current: `"[PORTFOLIO_URL]"` (or set `NEXT_PUBLIC_PORTFOLIO_URL` in `.env.local`)
-   - Action: Replace with your live portfolio URL (e.g., `https://akshatgupta.dev`).
+   - Action: Replace `[Dec 2026 / Present]` with your exact date or `"Present"`.
+5. **Portfolio Case Study URL** (`data/profile.ts`):
+   - Current: `"[PORTFOLIO_URL]"`
+   - Action: Set `NEXT_PUBLIC_PORTFOLIO_URL` in `.env.local` or update `portfolioUrl`.
 
 ---
 
 ## 🚢 Deploying to Vercel
 
-1. Push this folder to a GitHub repository (e.g. `github.com/akshat0709/built-by-akshat`).
-2. Import the project in your [Vercel Dashboard](https://vercel.com).
-3. Framework Preset: **Next.js**.
-4. Configure Environment Variables:
-   - `NEXT_PUBLIC_SITE_URL`: `https://builtby.yourdomain.com`
-   - `NEXT_PUBLIC_PORTFOLIO_URL`: `https://yourdomain.com`
-5. Click **Deploy**.
+1. Push to GitHub: `https://github.com/akshat0709/builtbyakshat.git`.
+2. Connect repo on [Vercel](https://vercel.com).
+3. Configure Environment Variables:
+   - `NEXT_PUBLIC_SITE_URL`: `https://builtby.akshatgupta.dev` (or custom domain)
+   - `NEXT_PUBLIC_PORTFOLIO_URL`: `https://akshatgupta.dev`
+4. Deploy.
