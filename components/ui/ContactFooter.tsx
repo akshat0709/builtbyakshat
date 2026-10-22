@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 import { builderProfile } from "@/data/profile";
+import { Product } from "@/data/products";
 
-export function ContactFooter() {
+interface ContactFooterProps {
+  currentProduct?: Product | null;
+}
+
+export function ContactFooter({ currentProduct }: ContactFooterProps) {
   const { contact, name } = builderProfile;
   const [copied, setCopied] = useState(false);
 
