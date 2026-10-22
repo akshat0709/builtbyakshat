@@ -1,13 +1,17 @@
 import React from "react";
 import { builderProfile } from "@/data/profile";
+import { CopyLinkButton } from "@/components/ui/CopyLinkButton";
 
 export function Hero() {
   return (
     <header className="pt-8 pb-12 md:pt-14 md:pb-16 border-b-ink border-b-2 border-dashed">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
         <div className="space-y-4 max-w-2xl">
-          <div className="inline-block px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm dark:shadow-hard-dark-sm text-xs font-mono tracking-wide text-ink dark:text-cream">
-            About the Builder
+          <div className="flex items-center gap-3">
+            <div className="inline-block px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm dark:shadow-hard-dark-sm text-xs font-mono tracking-wide text-ink dark:text-cream">
+              About the Builder
+            </div>
+            <CopyLinkButton className="print:hidden" />
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-ink dark:text-cream tracking-tight leading-[1.1]">
@@ -28,7 +32,7 @@ export function Hero() {
         {/* Quick jump anchor navigation */}
         <nav
           aria-label="Page sections"
-          className="flex flex-wrap md:flex-col gap-2 pt-2 md:pt-0 shrink-0"
+          className="flex flex-wrap md:flex-col gap-2 pt-2 md:pt-0 shrink-0 print:hidden"
         >
           <a
             href="#experience"

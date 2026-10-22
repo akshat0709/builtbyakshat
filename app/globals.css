@@ -76,3 +76,32 @@
 .skip-link:focus {
   top: 1rem;
 }
+
+/* Print Styles */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    font-size: 11pt;
+  }
+
+  .skip-link,
+  nav,
+  button,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  header,
+  section,
+  article {
+    border-color: #1a1a1a !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  a {
+    color: #1a1a1a !important;
+    text-decoration: underline !important;
+  }
+}

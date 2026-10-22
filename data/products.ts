@@ -127,7 +127,10 @@ export function getProductByRef(
   if (!rawRef || typeof rawRef !== "string") {
     return null;
   }
-  const sanitized = rawRef.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
+  let sanitized = rawRef.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
+  if (sanitized.startsWith("qr-")) {
+    sanitized = sanitized.slice(3);
+  }
   if (Object.prototype.hasOwnProperty.call(PRODUCTS, sanitized)) {
     return PRODUCTS[sanitized];
   }
