@@ -3,10 +3,12 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/ui/Hero";
 import { ExperienceTimeline } from "@/components/ui/ExperienceTimeline";
 import { ThingsIveBuilt } from "@/components/ui/ThingsIveBuilt";
+import { StickerPile } from "@/components/ui/StickerPile";
 import { SkillsIndex } from "@/components/ui/SkillsIndex";
 import { EducationRecognition } from "@/components/ui/EducationRecognition";
 import { ContactFooter } from "@/components/ui/ContactFooter";
 import { Reveal } from "@/components/ui/Reveal";
+import { CursorBlob } from "@/components/ui/CursorBlob";
 import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import { getProductByRef } from "@/data/products";
 import { builderProfile } from "@/data/profile";
@@ -20,7 +22,6 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const product = getProductByRef(ref);
 
   const siteUrl = builderProfile.siteUrl;
-  // Canonical URL stays base URL without ?ref to avoid duplicate-content indexing issues
   const canonicalUrl = "/";
 
   if (product) {
@@ -95,15 +96,22 @@ export default function HomePage({ searchParams }: PageProps) {
 
   return (
     <main id="main-content" className="min-h-screen">
+      <CursorBlob />
       <AnalyticsTracker refSlug={currentProduct ? currentProduct.slug : "none"} />
+
       <Hero currentProduct={currentProduct} />
 
-      <Reveal delay={0.06}>
+      <Reveal delay={0.05}>
         <ExperienceTimeline />
       </Reveal>
 
-      <Reveal delay={0.08}>
+      <Reveal delay={0.07}>
         <ThingsIveBuilt />
+      </Reveal>
+
+      {/* Signature Interaction 1: Draggable Sticker Pile */}
+      <Reveal delay={0.09}>
+        <StickerPile />
       </Reveal>
 
       <Reveal delay={0.1}>
