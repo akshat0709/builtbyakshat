@@ -8,6 +8,7 @@ import { SkillsIndex } from "@/components/ui/SkillsIndex";
 import { EducationRecognition } from "@/components/ui/EducationRecognition";
 import { ContactFooter } from "@/components/ui/ContactFooter";
 import { Reveal } from "@/components/ui/Reveal";
+import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import { getProductByRef } from "@/data/products";
 import { builderProfile } from "@/data/profile";
 
@@ -95,6 +96,7 @@ export default function HomePage({ searchParams }: PageProps) {
 
   return (
     <main id="main-content" className="min-h-screen">
+      <AnalyticsTracker refSlug={currentProduct ? currentProduct.slug : "none"} />
       <Hero />
 
       {currentProduct && (
