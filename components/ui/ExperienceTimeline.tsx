@@ -1,9 +1,34 @@
 import React from "react";
 import { builderProfile } from "@/data/profile";
 import { TaxiDoodle } from "@/components/doodles/TaxiDoodle";
+import { ProductStatus } from "@/data/products";
 
 export function ExperienceTimeline() {
   const { experience } = builderProfile;
+
+  const formatStatus = (status: ProductStatus) => {
+    switch (status) {
+      case "live":
+        return "Live";
+      case "pre-launch":
+        return "Pre-launch";
+      case "prototype":
+        return "Prototype";
+      default:
+        return status;
+    }
+  };
+
+  const getStatusBadgeStyle = (status: ProductStatus) => {
+    switch (status) {
+      case "live":
+        return "bg-teal/25 text-teal dark:text-teal border-ink";
+      case "pre-launch":
+        return "bg-sunny/40 text-ink dark:text-cream border-ink";
+      case "prototype":
+        return "bg-tomato/25 text-tomato dark:text-tomato border-ink";
+    }
+  };
 
   return (
     <section id="experience" aria-labelledby="experience-heading" className="py-12 md:py-16">
@@ -36,13 +61,23 @@ export function ExperienceTimeline() {
               aria-hidden="true"
             />
 
-            {/* Header: Role, Company, Period */}
+            {/* Header: Role, Company, Status, Period */}
             <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-3">
               <div>
-                <h3 className="text-xl sm:text-2xl font-display font-bold text-ink dark:text-cream">
-                  {item.role}
-                </h3>
-                <div className="text-sm font-mono font-medium text-ink/80 dark:text-cream/80 mt-0.5">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-ink dark:text-cream">
+                    {item.role}
+                  </h3>
+                  {/* Status chip driven by product status */}
+                  <span
+                    className={`px-2.5 py-0.5 rounded-full border text-[11px] font-mono font-bold shadow-hard-sm dark:shadow-hard-dark-sm ${getStatusBadgeStyle(
+                      item.status
+                    )}`}
+                  >
+                    {formatStatus(item.status)}
+                  </span>
+                </div>
+                <div className="text-sm font-mono font-medium text-ink/80 dark:text-cream/80">
                   {item.company}
                 </div>
               </div>
@@ -56,31 +91,38 @@ export function ExperienceTimeline() {
               {item.description}
             </p>
 
-            {/* Stack Tags & Link */}
-            <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-ink/15 dark:border-cream/15">
-              <div className="flex flex-wrap gap-1.5" aria-label="Technologies used">
-                {item.stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2.5 py-0.5 rounded-full bg-paper dark:bg-ink-deep border-ink border text-xs font-mono text-ink dark:text-cream font-medium"
+            {/* Stack Tags */}
+            <div className="flex flex-wrap gap-1.5 mb-5" aria-label="Technologies used">
+              {item.stack.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2.5 py-0.5 rounded-full bg-paper dark:bg-ink-deep border-ink border text-xs font-mono text-ink dark:text-cream font-medium"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* Verification links strip */}
+            {item.verifyLinks && item.verifyLinks.length > 0 && (
+              <div className="pt-3 border-t border-ink/15 dark:border-cream/15 flex flex-wrap items-center gap-3">
+                <span className="text-xs font-mono text-ink/60 dark:text-cream/60 font-semibold">
+                  Verify:
+                </span>
+                {item.verifyLinks.map((verify) => (
+                  <a
+                    key={verify.url}
+                    href={verify.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-mono font-medium text-ink dark:text-cream hover:text-teal underline underline-offset-4 decoration-ink/40 hover:decoration-teal transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
                   >
-                    {tech}
-                  </span>
+                    <span>{verify.label}</span>
+                    <span aria-hidden="true" className="text-[10px]">↗</span>
+                  </a>
                 ))}
               </div>
-
-              {item.link && (
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-teal text-white border-ink border-2 text-xs font-mono font-semibold hover:bg-teal/90 shadow-hard-sm dark:shadow-hard-dark-sm transition-transform active:translate-x-0.5 active:translate-y-0.5 focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:outline-none self-start sm:self-auto shrink-0"
-                >
-                  <span>Visit {item.company}</span>
-                  <span aria-hidden="true">↗</span>
-                </a>
-              )}
-            </div>
+            )}
           </article>
         ))}
       </div>

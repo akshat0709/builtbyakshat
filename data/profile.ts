@@ -1,9 +1,19 @@
+import { PRODUCTS, ProductStatus } from "./products";
+
+export interface VerifyLink {
+  label: string;
+  url: string;
+}
+
 export interface ExperienceItem {
   role: string;
   company: string;
   period: string;
   description: string;
   stack: string[];
+  productSlug?: string;
+  status: ProductStatus;
+  verifyLinks: VerifyLink[];
   link?: string;
 }
 
@@ -12,7 +22,9 @@ export interface BuiltProjectItem {
   title: string;
   description: string;
   stack: string[];
-  link: string;
+  link?: string;
+  status: ProductStatus;
+  verifyLinks: VerifyLink[];
   doodle: "taxi" | "robot" | "train";
 }
 
@@ -83,7 +95,16 @@ export const builderProfile: BuilderProfile = {
         "Supabase (PostgreSQL)",
         "Tailwind CSS",
       ],
+      productSlug: "orange-taxi",
+      status: PRODUCTS["orange-taxi"].status,
       link: "https://orange-taxi.com",
+      verifyLinks: [
+        { label: "Live Service", url: "https://orange-taxi.com" },
+        {
+          label: "LinkedIn Experience",
+          url: "https://linkedin.com/in/akshat-gupta-957084317",
+        },
+      ],
     },
   ],
   builtProjects: [
@@ -93,15 +114,30 @@ export const builderProfile: BuilderProfile = {
       description: "Full-stack electric ride-hailing and fleet platform",
       stack: ["React", "TypeScript", "TanStack Start", "Supabase", "Tailwind CSS"],
       link: "https://orange-taxi.com",
+      status: PRODUCTS["orange-taxi"].status,
+      verifyLinks: [
+        { label: "Live Site", url: "https://orange-taxi.com" },
+        {
+          label: "LinkedIn Verification",
+          url: "https://linkedin.com/in/akshat-gupta-957084317",
+        },
+      ],
       doodle: "taxi",
     },
     {
-      id: "rescue-robot",
+      id: "autonomous-rescue-robot",
       title: "Autonomous Search and Rescue Robot",
       description:
         "Obstacle sensing, telemetry and path planning in GPS-denied zones",
       stack: ["ROS", "Python", "C++", "Microcontrollers", "Sensors"],
-      link: "[RESCUE_ROBOT_REPO_URL]",
+      link: "https://github.com/akshat0709/AutonomousSearchAndRescueRobot",
+      status: PRODUCTS["autonomous-rescue-robot"].status,
+      verifyLinks: [
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/akshat0709/AutonomousSearchAndRescueRobot",
+        },
+      ],
       doodle: "robot",
     },
     {
@@ -110,7 +146,14 @@ export const builderProfile: BuilderProfile = {
       description:
         "Computer vision with real-time alerts to prevent train-animal collisions",
       stack: ["Python", "OpenCV", "YOLO", "Edge AI", "IoT"],
-      link: "[ANIMAL_DETECTION_REPO_URL]",
+      link: "https://github.com/akshat0709/AnimalDetection",
+      status: PRODUCTS["animal-detection"].status,
+      verifyLinks: [
+        {
+          label: "GitHub Repository",
+          url: "https://github.com/akshat0709/AnimalDetection",
+        },
+      ],
       doodle: "train",
     },
   ],

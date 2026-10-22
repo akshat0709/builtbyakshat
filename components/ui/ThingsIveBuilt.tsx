@@ -3,6 +3,7 @@ import { builderProfile } from "@/data/profile";
 import { TaxiDoodle } from "@/components/doodles/TaxiDoodle";
 import { RobotDoodle } from "@/components/doodles/RobotDoodle";
 import { TrainDoodle } from "@/components/doodles/TrainDoodle";
+import { ProductStatus } from "@/data/products";
 
 export function ThingsIveBuilt() {
   const { builtProjects, portfolioUrl } = builderProfile;
@@ -15,6 +16,30 @@ export function ThingsIveBuilt() {
         return <RobotDoodle className="w-14 h-14" decorative />;
       case "train":
         return <TrainDoodle className="w-16 h-12" decorative />;
+    }
+  };
+
+  const formatStatus = (status: ProductStatus) => {
+    switch (status) {
+      case "live":
+        return "Live";
+      case "pre-launch":
+        return "Pre-launch";
+      case "prototype":
+        return "Prototype";
+      default:
+        return status;
+    }
+  };
+
+  const getStatusBadgeStyle = (status: ProductStatus) => {
+    switch (status) {
+      case "live":
+        return "bg-teal/25 text-teal dark:text-teal border-ink";
+      case "pre-launch":
+        return "bg-sunny/40 text-ink dark:text-cream border-ink";
+      case "prototype":
+        return "bg-tomato/25 text-tomato dark:text-tomato border-ink";
     }
   };
 
@@ -35,69 +60,71 @@ export function ThingsIveBuilt() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {builtProjects.map((project) => {
-          const isPlaceholder = project.link.includes("[") && project.link.includes("]");
-
-          return (
-            <article
-              key={project.id}
-              className="group flex flex-col justify-between bg-cream-light dark:bg-ink-card border-ink border-2 rounded-2xl p-5 md:p-6 shadow-hard dark:shadow-hard-dark hover:-translate-y-1 transition-transform duration-200"
-            >
-              <div>
-                <div className="flex items-start justify-between gap-3 mb-4">
-                  <div className="p-2 rounded-xl bg-paper dark:bg-ink-deep border-ink border-2 shadow-hard-sm dark:shadow-hard-dark-sm">
-                    {renderDoodle(project.doodle)}
-                  </div>
-                  <span className="text-xs font-mono text-ink/50 dark:text-cream/50 font-bold">
-                    #{project.id}
-                  </span>
+        {builtProjects.map((project) => (
+          <article
+            key={project.id}
+            className="group flex flex-col justify-between bg-cream-light dark:bg-ink-card border-ink border-2 rounded-2xl p-5 md:p-6 shadow-hard dark:shadow-hard-dark hover:-translate-y-1 transition-transform duration-200"
+          >
+            <div>
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div className="p-2 rounded-xl bg-paper dark:bg-ink-deep border-ink border-2 shadow-hard-sm dark:shadow-hard-dark-sm">
+                  {renderDoodle(project.doodle)}
                 </div>
-
-                <h3 className="text-lg font-display font-bold text-ink dark:text-cream mb-2 leading-snug">
-                  {project.title}
-                </h3>
-
-                <p className="text-sm font-body text-ink/80 dark:text-cream/80 leading-relaxed mb-4">
-                  {project.description}
-                </p>
+                {/* Status chip driven by product status */}
+                <span
+                  className={`px-2.5 py-0.5 rounded-full border text-[11px] font-mono font-bold shadow-hard-sm dark:shadow-hard-dark-sm ${getStatusBadgeStyle(
+                    project.status
+                  )}`}
+                >
+                  {formatStatus(project.status)}
+                </span>
               </div>
 
-              <div>
-                {/* Stack tags */}
-                <div className="flex flex-wrap gap-1.5 mb-5" aria-label="Technologies">
-                  {project.stack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-2 py-0.5 rounded-full bg-paper dark:bg-ink-deep border border-ink/40 dark:border-cream/30 text-[11px] font-mono text-ink/85 dark:text-cream/85"
+              <h3 className="text-lg font-display font-bold text-ink dark:text-cream mb-2 leading-snug">
+                {project.title}
+              </h3>
+
+              <p className="text-sm font-body text-ink/80 dark:text-cream/80 leading-relaxed mb-4">
+                {project.description}
+              </p>
+            </div>
+
+            <div>
+              {/* Stack tags */}
+              <div className="flex flex-wrap gap-1.5 mb-4" aria-label="Technologies">
+                {project.stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2 py-0.5 rounded-full bg-paper dark:bg-ink-deep border border-ink/40 dark:border-cream/30 text-[11px] font-mono text-ink/85 dark:text-cream/85"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Verify links: only show links that exist */}
+              {project.verifyLinks && project.verifyLinks.length > 0 && (
+                <div className="pt-3 border-t border-ink/15 dark:border-cream/15 flex flex-wrap items-center gap-2.5">
+                  <span className="text-[11px] font-mono text-ink/60 dark:text-cream/60 font-semibold">
+                    Verify:
+                  </span>
+                  {project.verifyLinks.map((verify) => (
+                    <a
+                      key={verify.url}
+                      href={verify.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-mono font-medium text-ink dark:text-cream hover:text-teal underline underline-offset-4 decoration-ink/40 hover:decoration-teal transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
                     >
-                      {tech}
-                    </span>
+                      <span>{verify.label}</span>
+                      <span aria-hidden="true" className="text-[10px]">↗</span>
+                    </a>
                   ))}
                 </div>
-
-                {/* Link */}
-                {isPlaceholder ? (
-                  <span
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-paper dark:bg-ink-deep border-ink/40 border text-xs font-mono text-ink/60 dark:text-cream/60 cursor-not-allowed"
-                    title={`Placeholder link: ${project.link}`}
-                  >
-                    <span>Source [Placeholder]</span>
-                  </span>
-                ) : (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-paper dark:bg-ink-deep border-ink border-2 text-xs font-mono font-semibold text-ink dark:text-cream hover:bg-sunny/30 dark:hover:bg-sunny/20 shadow-hard-sm dark:shadow-hard-dark-sm transition-colors focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:outline-none"
-                  >
-                    <span>View project</span>
-                    <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-              </div>
-            </article>
-          );
-        })}
+              )}
+            </div>
+          </article>
+        ))}
       </div>
 
       {/* Full portfolio case studies link */}
