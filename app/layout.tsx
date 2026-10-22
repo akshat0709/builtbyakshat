@@ -3,6 +3,10 @@ import { Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/goog
 import "./globals.css";
 import { builderProfile } from "@/data/profile";
 import { Analytics } from "@vercel/analytics/react";
+import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
+import { CursorBlob } from "@/components/ui/CursorBlob";
+import { PageTransition } from "@/components/ui/PageTransition";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -26,7 +30,10 @@ const siteUrl = builderProfile.siteUrl;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Akshat Gupta | Builder of Orange Taxi and more",
+  title: {
+    default: "Akshat Gupta | Builder of Orange Taxi and more",
+    template: "%s | Akshat Gupta",
+  },
   description:
     "Full-stack developer and CS undergrad (IoT, Cybersecurity & Blockchain) at BMS College of Engineering, Bengaluru. Builder of Orange Taxi, autonomous rescue robots, and real-world systems.",
   authors: [{ name: builderProfile.name, url: siteUrl }],
@@ -51,7 +58,7 @@ export const metadata: Metadata = {
       "Full-stack developer and CS undergrad (IoT, Cybersecurity & Blockchain) at BMS College of Engineering, Bengaluru. Builder of Orange Taxi, autonomous rescue robots, and real-world systems.",
     url: siteUrl,
     siteName: "Akshat Gupta - Built by Akshat",
-    type: "profile",
+    type: "website",
     locale: "en_US",
   },
   twitter: {
@@ -138,12 +145,17 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className="bg-cream text-ink dark:bg-ink-deep dark:text-cream min-h-screen selection:bg-sunny selection:text-ink">
+      <body className="bg-cream text-ink dark:bg-ink-deep dark:text-cream min-h-screen selection:bg-sunny selection:text-ink antialiased">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {children}
+        <CursorBlob />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-h-screen">
+          <Navbar />
+          <div className="flex-1">
+            <PageTransition>{children}</PageTransition>
+          </div>
+          <Footer />
         </div>
         <Analytics />
       </body>
