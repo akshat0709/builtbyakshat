@@ -1,65 +1,117 @@
+"use client";
+
 import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { builderProfile } from "@/data/profile";
+import { TerminalSticker } from "@/components/ui/TerminalSticker";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { CopyLinkButton } from "@/components/ui/CopyLinkButton";
+import { PeelOffRefSticker } from "@/components/ui/PeelOffRefSticker";
+import { Product } from "@/data/products";
+import { springTransition } from "@/lib/motion";
 
-export function Hero() {
+interface HeroProps {
+  currentProduct?: Product | null;
+}
+
+export function Hero({ currentProduct }: HeroProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <header className="pt-8 pb-12 md:pt-14 md:pb-16 border-b-ink border-b-2 border-dashed">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-        <div className="space-y-4 max-w-2xl">
-          <div className="flex items-center gap-3">
-            <div className="inline-block px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm dark:shadow-hard-dark-sm text-xs font-mono tracking-wide text-ink dark:text-cream">
-              About the Builder
-            </div>
-            <CopyLinkButton className="print:hidden" />
-          </div>
-
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-ink dark:text-cream tracking-tight leading-[1.1]">
-            {builderProfile.name}
-          </h1>
-
-          <p className="text-base sm:text-lg md:text-xl font-body text-ink/90 dark:text-cream/90 leading-relaxed font-normal">
-            {builderProfile.tagline}
-          </p>
-
-          <p className="text-sm sm:text-base font-body text-ink/75 dark:text-cream/70 leading-relaxed pt-1">
-            If you clicked a <span className="font-mono text-xs px-1.5 py-0.5 rounded bg-amber-100 dark:bg-ink-border border border-ink/40 dark:border-cream/30">Built by Akshat Gupta ↗</span> link
-            on an application, tool, or hardware project, this page gives you a concise overview
-            of who engineered it, what other systems I have shipped, and where I have worked.
-          </p>
-        </div>
-
-        {/* Quick jump anchor navigation */}
-        <nav
-          aria-label="Page sections"
-          className="flex flex-wrap md:flex-col gap-2 pt-2 md:pt-0 shrink-0 print:hidden"
-        >
-          <a
-            href="#experience"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-medium text-ink dark:text-cream hover:bg-sunny/40 dark:hover:bg-sunny/20 shadow-hard-sm dark:shadow-hard-dark-sm transition-colors focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:outline-none"
-          >
-            <span>↓</span> Experience
-          </a>
-          <a
-            href="#things-built"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-medium text-ink dark:text-cream hover:bg-teal/30 dark:hover:bg-teal/20 shadow-hard-sm dark:shadow-hard-dark-sm transition-colors focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:outline-none"
-          >
-            <span>↓</span> Things I&apos;ve Built
-          </a>
-          <a
-            href="#skills"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-medium text-ink dark:text-cream hover:bg-tomato/30 dark:hover:bg-tomato/20 shadow-hard-sm dark:shadow-hard-dark-sm transition-colors focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:outline-none"
-          >
-            <span>↓</span> Skills
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-medium text-ink dark:text-cream hover:bg-amber-100 dark:hover:bg-ink-border shadow-hard-sm dark:shadow-hard-dark-sm transition-colors focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:outline-none"
-          >
-            <span>↓</span> Contact
-          </a>
-        </nav>
+    <header className="relative pt-8 pb-12 md:pt-14 md:pb-16 border-b-ink border-b-2 border-dashed">
+      {/* Background oversized word */}
+      <div
+        className="absolute top-2 right-0 text-7xl sm:text-8xl md:text-9xl font-display font-black text-ink/[0.04] dark:text-cream/[0.04] select-none pointer-events-none tracking-tighter"
+        aria-hidden="true"
+      >
+        WORKSHOP.
       </div>
+
+      {/* Top action row: theme toggle & copy link */}
+      <div className="flex items-center justify-between gap-3 mb-6">
+        <TerminalSticker />
+
+        <div className="flex items-center gap-2.5 print:hidden">
+          <CopyLinkButton />
+          <ThemeToggle />
+        </div>
+      </div>
+
+      {/* Peel-off sticker if coming from a specific product */}
+      {currentProduct && <PeelOffRefSticker product={currentProduct} />}
+
+      {/* Main hero copy */}
+      <div className="space-y-4 max-w-2xl mt-4">
+        {/* Big display name with springy drop-in */}
+        <motion.h1
+          initial={shouldReduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: -24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={springTransition}
+          className="text-4xl sm:text-5xl md:text-6xl font-display font-black text-ink dark:text-cream tracking-tight leading-[1.05]"
+        >
+          {builderProfile.name}
+        </motion.h1>
+
+        {/* Tagline with highlighter marks */}
+        <p className="text-xl sm:text-2xl font-display font-bold text-ink dark:text-cream leading-snug">
+          I build things that move:{" "}
+          <mark className="bg-sunny px-1.5 py-0.5 rounded -rotate-1 inline-block text-ink">
+            cabs
+          </mark>
+          ,{" "}
+          <mark className="bg-teal px-1.5 py-0.5 rounded rotate-1 inline-block text-white">
+            robots
+          </mark>
+          ,{" "}
+          <mark className="bg-tomato px-1.5 py-0.5 rounded -rotate-2 inline-block text-white">
+            trains
+          </mark>
+          .
+        </p>
+
+        {/* Warmer conversational intro */}
+        <p className="text-sm sm:text-base font-body text-ink/80 dark:text-cream/80 leading-relaxed pt-1">
+          {builderProfile.intro}
+        </p>
+      </div>
+
+      {/* Terminal Command Navigation Pills */}
+      <nav
+        aria-label="Section navigation"
+        className="flex flex-wrap items-center gap-2.5 pt-8 print:hidden"
+      >
+        <span className="text-xs font-mono text-ink/50 dark:text-cream/50 select-none mr-1 font-bold">
+          JUMP:
+        </span>
+        <a
+          href="#experience"
+          aria-label="Scroll to experience section"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-bold text-ink dark:text-cream hover:bg-sunny shadow-hard-sm dark:shadow-hard-dark-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream"
+        >
+          <span>$ cd</span> <span>experience</span>
+        </a>
+        <a
+          href="#things-built"
+          aria-label="Scroll to projects section"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-bold text-ink dark:text-cream hover:bg-teal hover:text-white shadow-hard-sm dark:shadow-hard-dark-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream"
+        >
+          <span>$ cd</span> <span>built</span>
+        </a>
+        <a
+          href="#skills"
+          aria-label="Scroll to skills section"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-bold text-ink dark:text-cream hover:bg-tomato hover:text-white shadow-hard-sm dark:shadow-hard-dark-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream"
+        >
+          <span>$ cd</span> <span>skills</span>
+        </a>
+        <a
+          href="#contact"
+          aria-label="Scroll to contact section"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 text-xs font-mono font-bold text-ink dark:text-cream hover:bg-paper dark:hover:bg-ink-border shadow-hard-sm dark:shadow-hard-dark-sm active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream"
+        >
+          <span>$ cd</span> <span>contact</span>
+        </a>
+      </nav>
     </header>
   );
 }

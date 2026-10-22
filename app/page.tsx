@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
 import { Hero } from "@/components/ui/Hero";
-import { AboutProductBlock } from "@/components/ui/AboutProductBlock";
 import { ExperienceTimeline } from "@/components/ui/ExperienceTimeline";
 import { ThingsIveBuilt } from "@/components/ui/ThingsIveBuilt";
 import { SkillsIndex } from "@/components/ui/SkillsIndex";
@@ -97,13 +96,7 @@ export default function HomePage({ searchParams }: PageProps) {
   return (
     <main id="main-content" className="min-h-screen">
       <AnalyticsTracker refSlug={currentProduct ? currentProduct.slug : "none"} />
-      <Hero />
-
-      {currentProduct && (
-        <Reveal delay={0.04}>
-          <AboutProductBlock product={currentProduct} />
-        </Reveal>
-      )}
+      <Hero currentProduct={currentProduct} />
 
       <Reveal delay={0.06}>
         <ExperienceTimeline />
