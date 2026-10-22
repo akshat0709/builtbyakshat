@@ -1,14 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { Hero } from "@/components/ui/Hero";
-import { ExperienceTimeline } from "@/components/ui/ExperienceTimeline";
-import { ThingsIveBuilt } from "@/components/ui/ThingsIveBuilt";
-import { StickerPile } from "@/components/ui/StickerPile";
-import { SkillsIndex } from "@/components/ui/SkillsIndex";
-import { EducationRecognition } from "@/components/ui/EducationRecognition";
-import { ContactFooter } from "@/components/ui/ContactFooter";
-import { Reveal } from "@/components/ui/Reveal";
-import { CursorBlob } from "@/components/ui/CursorBlob";
+import { HomeTeaserTiles } from "@/components/ui/HomeTeaserTiles";
 import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import { getProductByRef } from "@/data/products";
 import { builderProfile } from "@/data/profile";
@@ -22,7 +16,6 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const product = getProductByRef(ref);
 
   const siteUrl = builderProfile.siteUrl;
-  const canonicalUrl = "/";
 
   if (product) {
     const title = `${product.name} | Built by Akshat Gupta`;
@@ -33,12 +26,12 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       title,
       description,
       alternates: {
-        canonical: canonicalUrl,
+        canonical: `/built/${product.slug}`,
       },
       openGraph: {
         title: `${product.name} was built by Akshat Gupta.`,
         description: product.ogTagline,
-        url: `${siteUrl}/?ref=${product.slug}`,
+        url: `${siteUrl}/built/${product.slug}`,
         siteName: "Built by Akshat Gupta",
         type: "website",
         images: [
@@ -64,7 +57,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     title: "Akshat Gupta | Builder of Orange Taxi and more",
     description: builderProfile.tagline,
     alternates: {
-      canonical: canonicalUrl,
+      canonical: "/",
     },
     openGraph: {
       title: "Akshat Gupta | Builder of Orange Taxi and more",
@@ -94,37 +87,16 @@ export default function HomePage({ searchParams }: PageProps) {
   const ref = typeof searchParams?.ref === "string" ? searchParams.ref : undefined;
   const currentProduct = getProductByRef(ref);
 
+  // If a valid ?ref=<slug> is supplied on the root route, redirect directly to canonical product page /built/<slug>
+  if (currentProduct) {
+    redirect(`/built/${currentProduct.slug}`);
+  }
+
   return (
-    <main id="main-content" className="min-h-screen">
-      <CursorBlob />
-      <AnalyticsTracker refSlug={currentProduct ? currentProduct.slug : "none"} />
-
-      <Hero currentProduct={currentProduct} />
-
-      <Reveal delay={0.05}>
-        <ExperienceTimeline />
-      </Reveal>
-
-      <Reveal delay={0.07}>
-        <ThingsIveBuilt />
-      </Reveal>
-
-      {/* Signature Interaction 1: Draggable Sticker Pile */}
-      <Reveal delay={0.09}>
-        <StickerPile />
-      </Reveal>
-
-      <Reveal delay={0.1}>
-        <SkillsIndex />
-      </Reveal>
-
-      <Reveal delay={0.12}>
-        <EducationRecognition />
-      </Reveal>
-
-      <Reveal delay={0.14}>
-        <ContactFooter currentProduct={currentProduct} />
-      </Reveal>
+    <main id="main-content" className="py-2">
+      <AnalyticsTracker refSlug="none" />
+      <Hero />
+      <HomeTeaserTiles />
     </main>
   );
 }
