@@ -1,32 +1,23 @@
 /**
- * Safe whitelist mapping of reference slugs to human-readable project names.
- * Never displays raw, unvalidated query parameters.
+ * Re-exporting from the product registry to satisfy backwards-compatible imports.
+ * Directly backed by `data/products.ts`.
  */
-export const REF_MAPPINGS: Record<string, string> = {
-  "orange-taxi": "Orange Taxi",
-  "rescue-robot": "Autonomous Search and Rescue Robot",
-  "animal-detection": "Animal Detection in Locomotive Tracks",
-  portfolio: "Akshat's Portfolio",
-  wheelchair: "Voice-Controlled Wheelchair",
-};
+import { PRODUCTS, getProductByRef, Product } from "./products";
 
-/**
- * Sanitizes and resolves a ?ref parameter to a verified project display name.
- * Returns null if the ref is absent, empty, or unmapped.
- */
+export { PRODUCTS, getProductByRef };
+export type { Product };
+
+export const REF_MAPPINGS: Record<string, string> = Object.keys(PRODUCTS).reduce(
+  (acc, key) => {
+    acc[key] = PRODUCTS[key].name;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
 export function getProjectNameFromRef(
   rawRef: string | null | undefined
 ): string | null {
-  if (!rawRef || typeof rawRef !== "string") {
-    return null;
-  }
-
-  // Strictly sanitize key to alphanumeric and dashes
-  const sanitized = rawRef.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
-
-  if (Object.prototype.hasOwnProperty.call(REF_MAPPINGS, sanitized)) {
-    return REF_MAPPINGS[sanitized];
-  }
-
-  return null;
+  const product = getProductByRef(rawRef);
+  return product ? product.name : null;
 }
