@@ -82,7 +82,7 @@ export function ExperienceTimeline() {
                 </div>
               </div>
               <div className="self-start sm:self-auto px-3 py-1 rounded-full bg-sunny/30 dark:bg-sunny/20 border-ink border-2 text-xs font-mono font-semibold text-ink dark:text-cream shadow-hard-sm dark:shadow-hard-dark-sm">
-                {item.period}
+                {item.startDate} - {item.endDate}
               </div>
             </div>
 

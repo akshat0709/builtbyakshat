@@ -8,12 +8,14 @@ export interface VerifyLink {
 export interface ExperienceItem {
   role: string;
   company: string;
-  period: string;
+  startDate: string;
+  endDate: string; // Set once here
   description: string;
   stack: string[];
   productSlug?: string;
   status: ProductStatus;
   verifyLinks: VerifyLink[];
+  builderNote?: string;
   link?: string;
 }
 
@@ -25,6 +27,7 @@ export interface BuiltProjectItem {
   link?: string;
   status: ProductStatus;
   verifyLinks: VerifyLink[];
+  builderNote?: string;
   doodle: "taxi" | "robot" | "train";
 }
 
@@ -65,6 +68,7 @@ export interface BuilderProfile {
   intro: string;
   siteUrl: string;
   portfolioUrl: string;
+  currentlyBuilding: [string, string];
   experience: ExperienceItem[];
   builtProjects: BuiltProjectItem[];
   skills: SkillCategory[];
@@ -73,19 +77,38 @@ export interface BuilderProfile {
   contact: ContactInfo;
 }
 
+// Single data value for experience end date
+export const EXPERIENCE_END_DATE = "[Dec 2026 / Present]";
+
+// Build warning check: emits warning during compilation if still placeholder
+if (
+  typeof process !== "undefined" &&
+  (EXPERIENCE_END_DATE.includes("[") || EXPERIENCE_END_DATE.includes("PLACEHOLDER"))
+) {
+  if (process.env.NODE_ENV !== "test") {
+    console.warn(
+      `\n\x1b[33m⚠️  [builtbyakshat warning] EXPERIENCE_END_DATE is still "${EXPERIENCE_END_DATE}". Update it in data/profile.ts when confirmed.\x1b[0m\n`
+    );
+  }
+}
+
 export const builderProfile: BuilderProfile = {
   name: "Akshat Gupta",
-  tagline:
-    "Full-stack developer and CS undergrad (IoT, Cybersecurity & Blockchain) at BMS College of Engineering, Bengaluru. I build real systems, from a live ride-hailing platform to an autonomous rescue robot.",
+  tagline: "I build things that move: cabs, robots, trains.",
   intro:
-    "I design and engineer reliable full-stack applications, real-time distributed platforms, and embedded hardware systems.",
+    "You tapped a 'Built by Akshat Gupta' link. Hi. Here's who made it and what else I've made.",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://builtby.akshatgupta.dev",
   portfolioUrl: process.env.NEXT_PUBLIC_PORTFOLIO_URL || "[PORTFOLIO_URL]",
+  currentlyBuilding: [
+    "Next-gen fleet routing heuristics for EV cabs",
+    "Microcontroller sensor bus driver in C++",
+  ],
   experience: [
     {
       role: "Full-Stack Developer Intern",
       company: "Orange Taxi",
-      period: "Sep 2026 - [Dec 2026 / Present]",
+      startDate: "Sep 2026",
+      endDate: EXPERIENCE_END_DATE,
       description:
         "Pre-launch premium electric cab service in Delhi NCR. Designed and built the complete production software as a PWA: a real-time dispatch engine on Supabase Realtime (ride requests, live driver location, in-ride chat) and an in-app UPI payment flow with dynamic QR codes for driver cash handovers.",
       stack: [
@@ -98,6 +121,7 @@ export const builderProfile: BuilderProfile = {
       productSlug: "orange-taxi",
       status: PRODUCTS["orange-taxi"].status,
       link: "https://orange-taxi.com",
+      builderNote: PRODUCTS["orange-taxi"].builderNote,
       verifyLinks: [
         { label: "Live Service", url: "https://orange-taxi.com" },
         {
@@ -115,6 +139,7 @@ export const builderProfile: BuilderProfile = {
       stack: ["React", "TypeScript", "TanStack Start", "Supabase", "Tailwind CSS"],
       link: "https://orange-taxi.com",
       status: PRODUCTS["orange-taxi"].status,
+      builderNote: PRODUCTS["orange-taxi"].builderNote,
       verifyLinks: [
         { label: "Live Site", url: "https://orange-taxi.com" },
         {
@@ -132,6 +157,7 @@ export const builderProfile: BuilderProfile = {
       stack: ["ROS", "Python", "C++", "Microcontrollers", "Sensors"],
       link: "https://github.com/akshat0709/AutonomousSearchAndRescueRobot",
       status: PRODUCTS["autonomous-rescue-robot"].status,
+      builderNote: PRODUCTS["autonomous-rescue-robot"].builderNote,
       verifyLinks: [
         {
           label: "GitHub Repository",
@@ -148,6 +174,7 @@ export const builderProfile: BuilderProfile = {
       stack: ["Python", "OpenCV", "YOLO", "Edge AI", "IoT"],
       link: "https://github.com/akshat0709/AnimalDetection",
       status: PRODUCTS["animal-detection"].status,
+      builderNote: PRODUCTS["animal-detection"].builderNote,
       verifyLinks: [
         {
           label: "GitHub Repository",
