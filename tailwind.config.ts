@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: "media",
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -36,6 +36,20 @@ const config: Config = {
       },
       borderWidth: {
         ink: "2px",
+      },
+      keyframes: {
+        wobble: {
+          "0%, 100%": { transform: "rotate(-2deg)" },
+          "50%": { transform: "rotate(2deg)" },
+        },
+        blink: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
+      },
+      animation: {
+        wobble: "wobble 0.3s ease-in-out infinite",
+        blink: "blink 1s steps(1) 10", // stops after 10 seconds
       },
     },
   },
