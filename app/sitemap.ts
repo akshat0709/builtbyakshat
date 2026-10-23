@@ -1,15 +1,43 @@
 import { MetadataRoute } from "next";
-import { builderProfile } from "@/data/profile";
+import { SITE_URL } from "@/lib/site";
+import { PRODUCTS } from "@/data/products";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = builderProfile.siteUrl;
+  const currentDate = new Date();
 
-  return [
+  const productRoutes = Object.keys(PRODUCTS).map((slug) => ({
+    url: `${SITE_URL}/built/${slug}`,
+    lastModified: currentDate,
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }));
+
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: siteUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
+      url: SITE_URL,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
       priority: 1.0,
     },
+    {
+      url: `${SITE_URL}/experience`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/built`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/security`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
   ];
+
+  return [...staticRoutes, ...productRoutes];
 }

@@ -1,4 +1,5 @@
 import { PRODUCTS, ProductStatus } from "./products";
+import { SITE_URL } from "@/lib/site";
 
 export interface VerifyLink {
   label: string;
@@ -97,7 +98,7 @@ export const builderProfile: BuilderProfile = {
   tagline: "I build things that move: cabs, robots, trains.",
   intro:
     "You tapped a 'Built by Akshat Gupta' link. Hi. Here's who made it and what else I've made.",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://builtby.akshatgupta.dev",
+  siteUrl: SITE_URL,
   portfolioUrl: process.env.NEXT_PUBLIC_PORTFOLIO_URL || "[PORTFOLIO_URL]",
   currentlyBuilding: [
     "Next-gen fleet routing heuristics for EV cabs",

@@ -1,0 +1,7 @@
+# RFC 9116 Security Policy
+Contact: mailto:akshat070906@gmail.com
+Expires: 2027-10-23T07:00:00.000Z
+Preferred-Languages: en
+Canonical: https://builtby.akshatgupta.dev/.well-known/security.txt
+Policy: https://builtby.akshatgupta.dev/security
+Acknowledgments: https://builtby.akshatgupta.dev/security

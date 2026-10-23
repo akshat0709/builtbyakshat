@@ -124,6 +124,13 @@ export function Footer() {
             <span>Portfolio</span>
             <span aria-hidden="true">↗</span>
           </a>
+
+          <Link
+            href="/security"
+            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-paper dark:bg-ink-deep border-ink border text-xs font-mono font-bold text-ink dark:text-cream hover:bg-sunny/30 shadow-hard-sm transition-transform"
+          >
+            <span>Security</span>
+          </Link>
         </div>
 
         {/* Footer bottom bar with interactive Chai doodle */}
