@@ -131,6 +131,20 @@ export function Footer() {
           >
             <span>Security</span>
           </Link>
+
+          <Link
+            href="/colophon"
+            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-paper dark:bg-ink-deep border-ink border text-xs font-mono font-bold text-ink dark:text-cream hover:bg-sunny/30 shadow-hard-sm transition-transform"
+          >
+            <span>Colophon</span>
+          </Link>
+
+          <Link
+            href="/uses"
+            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-paper dark:bg-ink-deep border-ink border text-xs font-mono font-bold text-ink dark:text-cream hover:bg-sunny/30 shadow-hard-sm transition-transform"
+          >
+            <span>Uses</span>
+          </Link>
         </div>
 
         {/* Footer bottom bar with interactive Chai doodle */}
