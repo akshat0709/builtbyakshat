@@ -6,6 +6,7 @@ import { HomeTeaserTiles } from "@/components/ui/HomeTeaserTiles";
 import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import { getProductByRef } from "@/data/products";
 import { builderProfile } from "@/data/profile";
+import { SITE_URL } from "@/lib/site";
 
 interface PageProps {
   searchParams?: { [key: string]: string | string[] | undefined };
@@ -15,7 +16,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   const ref = typeof searchParams?.ref === "string" ? searchParams.ref : undefined;
   const product = getProductByRef(ref);
 
-  const siteUrl = builderProfile.siteUrl;
+  const siteUrl = SITE_URL;
 
   if (product) {
     const title = `${product.name} | Built by Akshat Gupta`;

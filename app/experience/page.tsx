@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { ExperienceTimeline } from "@/components/ui/ExperienceTimeline";
 import { EducationRecognition } from "@/components/ui/EducationRecognition";
-import { builderProfile } from "@/data/profile";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Experience | Akshat Gupta",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Experience | Akshat Gupta",
     description:
       "Engineering work experience timeline of Akshat Gupta: Full-Stack Developer Intern at Orange Taxi, real-time dispatch, dynamic UPI QR payments, and academic honors.",
-    url: `${builderProfile.siteUrl}/experience`,
+    url: absoluteUrl("/experience"),
   },
 };
 

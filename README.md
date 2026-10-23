@@ -267,3 +267,29 @@ changelog: [
    - `NEXT_PUBLIC_SITE_URL`: `https://builtby.akshatgupta.dev` (or custom domain)
    - `NEXT_PUBLIC_PORTFOLIO_URL`: `https://akshatgupta.dev`
 4. Deploy.
+
+---
+
+## 🌐 Moving to a Custom Domain (Checklist)
+
+When pointing this site to a custom domain (e.g., `builtby.akshatgupta.dev` or `akshat.build`):
+
+- [ ] **1. Add Domain in Vercel**:
+  - Open Vercel Project Dashboard → **Settings** → **Domains**.
+  - Add your custom domain or subdomain.
+  - Configure the required DNS records (`CNAME` or `A`) at your registrar / DNS provider.
+- [ ] **2. Update Environment Variable**:
+  - In Vercel Project Dashboard → **Settings** → **Environment Variables**:
+  - Set `NEXT_PUBLIC_SITE_URL` to your production domain (e.g., `https://builtby.akshatgupta.dev` without trailing slash).
+  - Trigger a redeployment so all sitemaps, Open Graph tags, canonical headers, JSON-LD, feeds, and security.txt pick up the new domain.
+- [ ] **3. Configure 301 Redirect for Previous URL**:
+  - Ensure Vercel's automatic domain redirect is enabled so traffic from `*.vercel.app` permanently redirects (301) to your custom domain.
+- [ ] **4. Update Embed Snippets in Downstream Apps**:
+  - In Orange Taxi, hardware repos, and client software footers, update the badge and deep link URLs:
+    ```html
+    <a href="https://your-custom-domain.dev/built/orange-taxi?utm_source=orange-taxi" target="_blank" rel="noopener">
+      <img src="https://your-custom-domain.dev/badge/orange-taxi?theme=light&size=md" alt="Built by Akshat Gupta" />
+    </a>
+    ```
+- [ ] **5. Verify Live Endpoints**:
+  - Verify that `https://your-custom-domain.dev/.well-known/security.txt`, `https://your-custom-domain.dev/badge/orange-taxi`, and `https://your-custom-domain.dev/contact.vcf` resolve cleanly.

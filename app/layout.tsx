@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { builderProfile } from "@/data/profile";
+import { SITE_URL } from "@/lib/site";
 import { Analytics } from "@vercel/analytics/react";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
@@ -26,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = builderProfile.siteUrl;
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

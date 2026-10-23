@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PRODUCTS, Product } from "@/data/products";
 import { builderProfile } from "@/data/profile";
+import { SITE_URL } from "@/lib/site";
 import { TaxiDoodle } from "@/components/doodles/TaxiDoodle";
 import { RobotDoodle } from "@/components/doodles/RobotDoodle";
 import { TrainDoodle } from "@/components/doodles/TrainDoodle";
@@ -31,7 +32,7 @@ export async function generateMetadata({
     };
   }
 
-  const siteUrl = builderProfile.siteUrl;
+  const siteUrl = SITE_URL;
   const ogImageUrl = `${siteUrl}/api/og?ref=${product.slug}`;
 
   return {
@@ -130,7 +131,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
       url: builderProfile.siteUrl,
     },
     keywords: product.stack.join(", "),
-    url: product.productUrl || product.repoUrl || `${builderProfile.siteUrl}/built/${product.slug}`,
+    url: product.productUrl || product.repoUrl || `${SITE_URL}/built/${product.slug}`,
   };
 
   return (

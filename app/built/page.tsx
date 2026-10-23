@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { ThingsIveBuilt } from "@/components/ui/ThingsIveBuilt";
-import { builderProfile } from "@/data/profile";
+import { absoluteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Things I've Built | Akshat Gupta",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: "Things I've Built | Akshat Gupta",
     description:
       "Index of software and hardware systems built by Akshat Gupta: Orange Taxi, Autonomous Rescue Robot, and Animal Detection on Locomotive Tracks.",
-    url: `${builderProfile.siteUrl}/built`,
+    url: absoluteUrl("/built"),
   },
 };
 
