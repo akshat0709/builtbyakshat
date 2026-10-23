@@ -5,6 +5,29 @@ export interface BuiltWithItem {
   plainEnglish: string;
 }
 
+export interface ProductMediaItem {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+}
+
+export interface ProductMedia {
+  screenshots?: ProductMediaItem[];
+  demoVideo?: {
+    src: string;
+    poster?: string;
+  };
+  poster?: string;
+}
+
+export interface ChangelogEntry {
+  date: string; // ISO date string (YYYY-MM-DD)
+  title: string;
+  note?: string;
+}
+
 export interface Product {
   slug: string;
   name: string;
@@ -18,6 +41,8 @@ export interface Product {
   repoUrl?: string;
   feedbackSubject: string;
   ogTagline: string;
+  media?: ProductMedia;
+  changelog?: ChangelogEntry[];
 }
 
 export const PRODUCTS: Record<string, Product> = {

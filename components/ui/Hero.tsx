@@ -2,11 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { builderProfile } from "@/data/profile";
 import { TerminalSticker } from "@/components/ui/TerminalSticker";
 import { CopyLinkButton } from "@/components/ui/CopyLinkButton";
 import { PeelOffRefSticker } from "@/components/ui/PeelOffRefSticker";
+import { ChaiDoodle } from "@/components/doodles/ChaiDoodle";
 import { Product } from "@/data/products";
 import { springTransition } from "@/lib/motion";
 
@@ -72,6 +74,29 @@ export function Hero({ currentProduct }: HeroProps) {
         <p className="text-sm sm:text-base font-body text-ink/80 dark:text-cream/80 leading-relaxed pt-1">
           {builderProfile.intro}
         </p>
+
+        {/* Optional portrait slot: renders NOTHING if missing */}
+        {builderProfile.photo && (
+          <div className="pt-2">
+            <div className="relative inline-block rotate-[-2deg] hover:rotate-0 transition-transform duration-200 p-3 pb-5 rounded-2xl bg-[#FFFDF7] dark:bg-ink-card border-ink border-2 shadow-hard">
+              <div className="relative w-28 h-36 sm:w-36 sm:h-44 rounded-xl overflow-hidden bg-paper dark:bg-ink-deep border border-ink">
+                <Image
+                  src={builderProfile.photo}
+                  alt={`Portrait photo of ${builderProfile.name}`}
+                  fill
+                  className="object-cover"
+                  sizes="144px"
+                />
+              </div>
+              <div
+                className="absolute -top-2.5 -right-2.5 p-1 rounded-full bg-sunny border border-ink shadow-hard-sm"
+                aria-hidden="true"
+              >
+                <ChaiDoodle className="w-5 h-5" decorative />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Terminal Command Navigation Pills */}

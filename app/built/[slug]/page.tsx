@@ -7,6 +7,7 @@ import { builderProfile } from "@/data/profile";
 import { TaxiDoodle } from "@/components/doodles/TaxiDoodle";
 import { RobotDoodle } from "@/components/doodles/RobotDoodle";
 import { TrainDoodle } from "@/components/doodles/TrainDoodle";
+import { MediaGallery } from "@/components/ui/MediaGallery";
 
 interface ProductPageProps {
   params: {
@@ -234,6 +235,9 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
             </p>
           </div>
         )}
+
+        {/* Real Media Slots & Field Proof */}
+        <MediaGallery media={product.media} productName={product.name} />
 
         {/* Action Buttons Row */}
         <div className="pt-6 border-t border-ink/15 dark:border-cream/15 flex flex-wrap items-center gap-3">

@@ -76,6 +76,8 @@ export interface BuilderProfile {
   education: EducationItem;
   recognition: RecognitionItem[];
   contact: ContactInfo;
+  photo?: string; // Optional path to photo in public/media/me/ (e.g. "/media/me/portrait.webp")
+  includePhone?: boolean; // Set true if phone number should be included in vCard
 }
 
 // Single data value for experience end date
