@@ -1,0 +1,41 @@
+name: Weekly External Link Checker
+
+on:
+  schedule:
+    # Run every Monday at 08:00 UTC
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  link-checker:
+    name: Check External URLs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Link Checker with Lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --accept 200..=204,403,999
+            --exclude "https://(www\.)?linkedin\.com/.*"
+            './data/**/*.ts'
+            './app/**/*.tsx'
+            './README.md'
+          fail: false
+        id: lychee
+
+      - name: Create Issue on Link Failure
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Automated Link Check Failure: Broken External URLs Detected"
+          content-filepath: ./lychee/out.md
+          labels: "bug, automated"

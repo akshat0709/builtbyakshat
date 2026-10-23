@@ -54,6 +54,27 @@ npm run lint
 npm run build
 ```
 
+### 6. Automated Quality Checks & Playwright Tests
+```bash
+# Run TypeScript compilation check
+npx tsc --noEmit
+
+# Install Playwright browser binary (first time only)
+npx playwright install chromium
+
+# Run Playwright smoke & accessibility suite
+npm test
+
+# Run smoke tests only
+npm run test:smoke
+
+# Run axe accessibility audit across routes
+npm run test:a11y
+
+# Run Lighthouse CI budget check
+npm run lhci
+```
+
 ---
 
 ## 📦 How to Add a Product to the Registry
