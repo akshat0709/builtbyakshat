@@ -182,6 +182,42 @@ Search for `[PLACEHOLDER]` or review these items in [`data/products.ts`](file://
 
 ---
 
+## 🏷️ Embeddable "Built by" Badges
+
+Dynamic SVG badges are generated on the fly via `/badge/<slug>` in the workshop style (ink border, cream fill, hard offset shadow, product status chip, and doodle icon):
+- **Endpoint**: `/badge/<slug>?theme=light|dark&size=sm|md`
+- **Cache**: Cached at the edge with `s-maxage=86400` (1 day).
+- **Interactive Helper**: Visit `/embed` to configure badges and copy snippets.
+
+### Markdown (for GitHub READMEs):
+```markdown
+[![Built by Akshat Gupta](https://builtby.akshatgupta.dev/badge/orange-taxi?theme=light&size=md)](https://builtby.akshatgupta.dev/built/orange-taxi?utm_source=orange-taxi)
+```
+
+### HTML (for App Footers & Landing Pages):
+```html
+<a href="https://builtby.akshatgupta.dev/built/orange-taxi?utm_source=orange-taxi" target="_blank" rel="noopener">
+  <img src="https://builtby.akshatgupta.dev/badge/orange-taxi?theme=light&size=md" alt="Built by Akshat Gupta" />
+</a>
+```
+
+### React / Tailwind:
+```tsx
+<a
+  href="https://builtby.akshatgupta.dev/built/orange-taxi?utm_source=orange-taxi"
+  target="_blank"
+  rel="noopener"
+  className="inline-block transition-transform hover:-translate-y-0.5"
+>
+  <img
+    src="https://builtby.akshatgupta.dev/badge/orange-taxi?theme=light&size=md"
+    alt="Built by Akshat Gupta"
+  />
+</a>
+```
+
+---
+
 ## 🚢 Deploying to Vercel
 
 1. Push to GitHub: `https://github.com/akshat0709/builtbyakshat.git`.
