@@ -252,7 +252,7 @@ export function MediaGallery({ media, productName }: MediaGalleryProps) {
                 ← Previous
               </button>
 
-              <span className="hidden sm:inline text-ink/60 dark:text-cream/60">
+              <span className="hidden sm:inline text-ink/80 dark:text-cream/80">
                 Use ← → arrow keys to navigate
               </span>
 

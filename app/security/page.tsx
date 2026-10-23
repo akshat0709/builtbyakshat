@@ -52,7 +52,7 @@ export default function SecurityPage() {
             <span className="px-2.5 py-1 rounded-full bg-tomato text-white border border-ink text-xs font-mono font-bold">
               RFC 9116
             </span>
-            <span className="font-mono text-xs text-ink/60 dark:text-cream/60">
+            <span className="font-mono text-xs text-ink/80 dark:text-cream/80">
               Responsible Disclosure
             </span>
           </div>

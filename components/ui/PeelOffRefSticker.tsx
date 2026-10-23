@@ -76,7 +76,7 @@ export function PeelOffRefSticker({ product }: PeelOffRefStickerProps) {
               {renderDoodle(product.slug)}
             </div>
             <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-ink/60 dark:text-cream/60 block font-bold">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-ink/80 dark:text-cream/80 block font-bold">
                 Origin Sticker
               </span>
               <span className="text-xs sm:text-sm font-mono font-semibold text-ink dark:text-cream">

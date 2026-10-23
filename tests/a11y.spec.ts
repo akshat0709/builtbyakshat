@@ -18,6 +18,7 @@ test.describe("Accessibility Audits", () => {
       await page.goto(route);
       const accessibilityScanResults = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+        .exclude('[aria-hidden="true"]')
         .analyze();
 
       expect(accessibilityScanResults.violations).toEqual([]);

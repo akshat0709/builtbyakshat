@@ -134,7 +134,7 @@ export function ExperienceTimeline() {
 
               {/* Stack tags with wobble on hover */}
               <div className="pt-2 mb-5">
-                <span className="text-xs font-mono uppercase tracking-wider text-ink/60 dark:text-cream/60 font-bold block mb-2">
+                <span className="text-xs font-mono uppercase tracking-wider text-ink/80 dark:text-cream/80 font-bold block mb-2">
                   Stack
                 </span>
                 <div className="flex flex-wrap gap-2" aria-label="Technologies used">
@@ -154,7 +154,7 @@ export function ExperienceTimeline() {
                 {/* Verification Links */}
                 {item.verifyLinks && item.verifyLinks.length > 0 && (
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-xs font-mono text-ink/60 dark:text-cream/60 font-bold">
+                    <span className="text-xs font-mono text-ink/80 dark:text-cream/80 font-bold">
                       Verify:
                     </span>
                     {item.verifyLinks.map((verify) => (

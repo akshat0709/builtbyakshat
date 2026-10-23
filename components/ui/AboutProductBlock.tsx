@@ -79,7 +79,7 @@ export function AboutProductBlock({ product }: AboutProductBlockProps) {
 
         {/* Built with rows */}
         <div className="space-y-3 pt-4 border-t border-ink/15 dark:border-cream/15 mb-6">
-          <span className="text-xs font-mono uppercase tracking-wider text-ink/60 dark:text-cream/60 font-bold block mb-2">
+          <span className="text-xs font-mono uppercase tracking-wider text-ink/80 dark:text-cream/80 font-bold block mb-2">
             Built with
           </span>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">

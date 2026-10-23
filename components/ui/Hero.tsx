@@ -104,7 +104,7 @@ export function Hero({ currentProduct }: HeroProps) {
         aria-label="Section navigation"
         className="flex flex-wrap items-center gap-2.5 pt-8 print:hidden"
       >
-        <span className="text-xs font-mono text-ink/50 dark:text-cream/50 select-none mr-1 font-bold">
+        <span className="text-xs font-mono text-ink/80 dark:text-cream/80 select-none mr-1 font-bold">
           JUMP:
         </span>
         <Link

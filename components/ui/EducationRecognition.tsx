@@ -22,7 +22,7 @@ export function EducationRecognition() {
 
       <div className="flex items-center justify-between mb-8">
         <div>
-          <span className="text-xs font-mono uppercase tracking-wider text-sunny font-bold block mb-1">
+          <span className="text-xs font-mono uppercase tracking-wider text-teal font-bold block mb-1">
             04 / Rigor & Honors
           </span>
           <h2

@@ -36,22 +36,22 @@ const COLOR_SWATCHES = [
   },
   {
     name: "Sunny",
-    hex: "#FFCE47",
+    hex: "#FFD13B",
     token: "bg-sunny",
     border: "#1A1A1A",
     description: "Flat solar yellow accent for primary tags, badges, and active pills.",
   },
   {
     name: "Teal",
-    hex: "#269389",
+    hex: "#0A524D",
     token: "bg-teal",
     textLight: true,
     border: "#1A1A1A",
-    description: "Flat pine/teal accent for live production status and links.",
+    description: "Deep pine teal accent for live production status and links.",
   },
   {
     name: "Tomato",
-    hex: "#E04836",
+    hex: "#C92A1D",
     token: "bg-tomato",
     textLight: true,
     border: "#1A1A1A",
@@ -151,7 +151,7 @@ export default function ColophonPage() {
                   <h3 className="font-display font-black text-base text-ink dark:text-cream">
                     {swatch.name}
                   </h3>
-                  <p className="text-xs font-body text-ink/75 dark:text-cream/70 mt-1 leading-relaxed">
+                  <p className="text-xs font-body text-ink/90 dark:text-cream/90 mt-1 leading-relaxed">
                     {swatch.description}
                   </p>
                 </div>
@@ -180,7 +180,7 @@ export default function ColophonPage() {
               <p className="font-display text-2xl sm:text-3xl font-black text-ink dark:text-cream tracking-tight">
                 Akshat Gupta · Workshop Door
               </p>
-              <p className="text-xs font-body text-ink/70 dark:text-cream/70 mt-1">
+              <p className="text-xs font-body text-ink/90 dark:text-cream/90 mt-1">
                 Selected for chunky mechanical quirks, angular terminals, and confident weight.
               </p>
             </div>
@@ -192,7 +192,7 @@ export default function ColophonPage() {
               <p className="font-body text-base text-ink dark:text-cream leading-relaxed">
                 I build real systems, from a live ride-hailing dispatch platform to an autonomous rescue robot.
               </p>
-              <p className="text-xs font-body text-ink/70 dark:text-cream/70 mt-1">
+              <p className="text-xs font-body text-ink/90 dark:text-cream/90 mt-1">
                 Selected for geometric clarity, generous open counters, and reading comfort across mobile viewports.
               </p>
             </div>
@@ -204,7 +204,7 @@ export default function ColophonPage() {
               <p className="font-mono text-sm text-ink dark:text-cream font-bold">
                 $ cd built · Built with plain-English labels
               </p>
-              <p className="text-xs font-body text-ink/70 dark:text-cream/70 mt-1">
+              <p className="text-xs font-body text-ink/90 dark:text-cream/90 mt-1">
                 Selected for developer ergonomics, distinctive operator symbols, and uniform tabular figures.
               </p>
             </div>

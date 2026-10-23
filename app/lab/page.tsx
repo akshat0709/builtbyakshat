@@ -10,7 +10,7 @@ const StickerPile = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-64 flex items-center justify-center font-mono text-xs text-ink/60 dark:text-cream/60">
+      <div className="h-64 flex items-center justify-center font-mono text-xs text-ink/80 dark:text-cream/80">
         Loading sticker physics workbench...
       </div>
     ),
@@ -57,7 +57,7 @@ export default function LabPage() {
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <span className="text-xs font-mono uppercase tracking-wider text-sunny font-bold block mb-1">
+              <span className="text-xs font-mono uppercase tracking-wider text-teal font-bold block mb-1">
                 Toy 01
               </span>
               <h2

@@ -145,7 +145,7 @@ export function ContactFooter({ currentProduct }: ContactFooterProps) {
         </div>
 
         {/* Footer bottom bar with interactive Chai doodle */}
-        <div className="mt-8 pt-4 border-t border-ink/10 dark:border-cream/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-ink/60 dark:text-cream/50">
+        <div className="mt-8 pt-4 border-t border-ink/10 dark:border-cream/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-ink/80 dark:text-cream/80">
           <div>
             Built by {name} · Indie-zine / workshop aesthetic
           </div>

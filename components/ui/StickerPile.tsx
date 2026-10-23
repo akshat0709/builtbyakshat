@@ -136,10 +136,10 @@ export function StickerPile() {
   return (
     <div className="my-10">
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-mono uppercase tracking-wider text-ink/60 dark:text-cream/60 font-bold block">
+        <span className="text-xs font-mono uppercase tracking-wider text-ink/80 dark:text-cream/80 font-bold block">
           Workshop Sticker Pile (Drag &amp; Toss)
         </span>
-        <span className="text-[11px] font-mono text-ink/50 dark:text-cream/50 hidden sm:inline">
+        <span className="text-[11px] font-mono text-ink/80 dark:text-cream/80 hidden sm:inline">
           Use mouse or arrow keys to nudge
         </span>
       </div>

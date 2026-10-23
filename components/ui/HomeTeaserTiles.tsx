@@ -21,7 +21,7 @@ export function HomeTeaserTiles() {
             Where do you want to start?
           </h2>
         </div>
-        <span className="hidden sm:inline-block font-mono text-xs text-ink/50 dark:text-cream/50">
+        <span className="hidden sm:inline-block font-mono text-xs text-ink/80 dark:text-cream/80">
           3 primary wings
         </span>
       </div>

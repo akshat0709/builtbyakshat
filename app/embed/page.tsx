@@ -155,7 +155,7 @@ export default function EmbedPage() {
 
         {/* Live Preview Display */}
         <div className="p-6 rounded-2xl bg-paper dark:bg-ink-deep border-ink border-2 shadow-hard-sm flex flex-col items-center justify-center gap-3">
-          <span className="text-[11px] font-mono text-ink/60 dark:text-cream/60 uppercase tracking-widest">
+          <span className="text-[11px] font-mono text-ink/80 dark:text-cream/80 uppercase tracking-widest">
             Live Preview
           </span>
           <div className="p-4 rounded-xl flex items-center justify-center">
@@ -166,7 +166,7 @@ export default function EmbedPage() {
               className="max-w-full h-auto"
             />
           </div>
-          <span className="text-xs font-mono text-ink/60 dark:text-cream/60">
+          <span className="text-xs font-mono text-ink/80 dark:text-cream/80">
             Target:{" "}
             <Link href={targetUrl} className="underline text-teal">
               {targetUrl}

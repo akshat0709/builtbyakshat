@@ -72,10 +72,9 @@ export default function ContactPage() {
                 type="button"
                 onClick={handleCopyEmail}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-paper dark:bg-ink-deep border-ink border-2 font-mono text-xs sm:text-sm font-bold text-ink dark:text-cream hover:bg-sunny shadow-hard-sm active:translate-x-0.5 active:translate-y-0.5 transition-transform"
-                aria-label={`Copy email address ${contact.email}`}
               >
                 <span>✉ {contact.email}</span>
-                <span className="text-[10px] uppercase font-black text-teal">
+                <span className="text-[10px] uppercase font-black px-1.5 py-0.5 rounded-full bg-teal text-white">
                   {copied ? "Copied!" : "Copy"}
                 </span>
               </button>
@@ -184,14 +183,14 @@ export default function ContactPage() {
 
           {/* Sign-off Card with handwritten SVG signature */}
           <div className="p-6 rounded-2xl bg-paper dark:bg-ink-card border-ink border-2 shadow-hard flex flex-col items-start">
-            <span className="font-mono text-xs font-bold uppercase tracking-wider text-ink/60 dark:text-cream/60 mb-2">
+            <span className="font-mono text-xs font-bold uppercase tracking-wider text-ink/80 dark:text-cream/80 mb-2">
               Sign-Off
             </span>
             <p className="font-body text-xs text-ink/80 dark:text-cream/80 leading-relaxed mb-4">
               Building systems from Bengaluru, India.
             </p>
             <Signature className="w-48 h-16 text-ink dark:text-cream" />
-            <span className="font-mono text-[11px] font-bold text-ink/50 dark:text-cream/50 mt-1">
+            <span className="font-mono text-[11px] font-bold text-ink/80 dark:text-cream/80 mt-1">
               Akshat Gupta
             </span>
           </div>

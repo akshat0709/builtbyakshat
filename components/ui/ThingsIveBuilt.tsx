@@ -130,13 +130,13 @@ export function ThingsIveBuilt() {
                     onClick={() => togglePeel(project.id)}
                     type="button"
                     aria-expanded={isPeeled}
-                    aria-label={`Toggle tech stack reveal for ${project.title}`}
+                    aria-label={`${isPeeled ? "Peel back stack" : "Peel corner for stack"} for ${project.title}`}
                     className="group/peel inline-flex items-center gap-1.5 text-xs font-mono font-bold text-teal dark:text-teal hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
                   >
                     <span>{isPeeled ? "Peel back stack ▲" : "Peel corner for stack ▾"}</span>
                   </button>
 
-                  <span className="text-[10px] font-mono text-ink/40 dark:text-cream/40">
+                  <span className="text-[10px] font-mono text-ink/80 dark:text-cream/40">
                     #{project.id}
                   </span>
                 </div>

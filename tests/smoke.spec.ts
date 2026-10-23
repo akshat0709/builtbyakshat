@@ -52,7 +52,7 @@ test.describe("Smoke Tests", () => {
     const pageRes = await page.goto("/security");
     expect(pageRes?.status()).toBe(200);
     await expect(page.locator("h1")).toContainText("Security Policy");
-    await expect(page.getByText("akshat070906@gmail.com")).toBeVisible();
+    await expect(page.locator("main").getByText("akshat070906@gmail.com")).toBeVisible();
 
     // Check RFC 9116 text file
     const txtRes = await request.get("/.well-known/security.txt");

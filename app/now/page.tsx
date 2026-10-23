@@ -112,7 +112,7 @@ export default function NowPage() {
         </section>
 
         {/* Timestamp footer */}
-        <div className="p-4 rounded-xl bg-paper dark:bg-ink-card border-ink border text-xs font-mono text-ink/60 dark:text-cream/60 flex items-center justify-between">
+        <div className="p-4 rounded-xl bg-paper dark:bg-ink-card border-ink border text-xs font-mono text-ink/80 dark:text-cream/80 flex items-center justify-between">
           <span>Status: Verified from Bengaluru workshop</span>
           <span className="font-bold text-ink dark:text-cream">
             Last updated: {nowData.lastUpdated}

@@ -74,14 +74,13 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                aria-label={`Navigate to ${item.label}`}
                 className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border-2 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink ${
                   active
                     ? "bg-sunny text-ink border-ink font-bold shadow-hard-sm"
                     : "bg-cream-light dark:bg-ink-card border-ink text-ink dark:text-cream font-medium shadow-hard-sm hover:bg-sunny/40 dark:hover:bg-sunny/20 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 }`}
               >
-                <span className="opacity-60 text-[10px]">$ cd</span>
+                <span className="text-[10px] font-bold">$ cd</span>
                 <span>{item.cmd}</span>
               </Link>
             );
@@ -155,7 +154,7 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="text-center font-mono text-xs text-ink/60 dark:text-cream/60 border-t border-ink/20 pt-4">
+          <div className="text-center font-mono text-xs text-ink/80 dark:text-cream/80 border-t border-ink/20 pt-4">
             Akshat Gupta · Workshop Door
           </div>
         </div>

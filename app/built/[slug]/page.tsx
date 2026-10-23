@@ -151,7 +151,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
           <span>$ cd built</span>
         </Link>
 
-        <span className="font-mono text-xs text-ink/60 dark:text-cream/60">
+        <span className="font-mono text-xs text-ink/80 dark:text-cream/80">
           product #{product.slug}
         </span>
       </div>
@@ -196,7 +196,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
 
         {/* Built With (Plain English) Grid */}
         <div className="mb-8 pt-6 border-t border-ink/15 dark:border-cream/15">
-          <h2 className="text-xs font-mono uppercase tracking-wider text-ink/60 dark:text-cream/60 font-bold block mb-3">
+          <h2 className="text-xs font-mono uppercase tracking-wider text-ink/80 dark:text-cream/80 font-bold block mb-3">
             Built with (plain-English breakdown)
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -228,10 +228,10 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
           </div>
         ) : (
           <div className="mb-8 pt-6 border-t border-ink/15 dark:border-cream/15">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-ink/40 dark:text-cream/40 font-bold block mb-1">
+            <h2 className="text-xs font-mono uppercase tracking-wider text-ink/80 dark:text-cream/40 font-bold block mb-1">
               Builder&apos;s note
             </h2>
-            <p className="text-xs font-mono text-ink/50 dark:text-cream/50 italic">
+            <p className="text-xs font-mono text-ink/80 dark:text-cream/80 italic">
               [Note pending confirmation from field tests]
             </p>
           </div>
@@ -267,7 +267,7 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
                       </span>
                       <time
                         dateTime={entry.date}
-                        className="font-mono text-[10px] text-ink/60 dark:text-cream/60"
+                        className="font-mono text-[10px] text-ink/80 dark:text-cream/80"
                       >
                         {entry.date}
                       </time>
