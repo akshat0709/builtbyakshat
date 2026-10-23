@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { builderProfile } from "@/data/profile";
 import { TaxiDoodle } from "@/components/doodles/TaxiDoodle";
 import { RobotDoodle } from "@/components/doodles/RobotDoodle";
@@ -161,9 +162,17 @@ export function ThingsIveBuilt() {
                 </div>
 
                 {/* Verification / Project Links */}
-                {project.verifyLinks && project.verifyLinks.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-2 pt-1">
-                    {project.verifyLinks.map((verify) => (
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <Link
+                    href={`/built/${project.id}`}
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-sunny text-ink border-ink border text-[11px] font-mono font-bold shadow-hard-sm hover:bg-sunny/80 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ink"
+                  >
+                    <span>Deep dive</span>
+                    <span aria-hidden="true">→</span>
+                  </Link>
+
+                  {project.verifyLinks &&
+                    project.verifyLinks.map((verify) => (
                       <a
                         key={verify.url}
                         href={verify.url}
@@ -175,8 +184,7 @@ export function ThingsIveBuilt() {
                         <span aria-hidden="true">↗</span>
                       </a>
                     ))}
-                  </div>
-                )}
+                </div>
               </div>
             </div>
           );
