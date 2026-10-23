@@ -83,6 +83,7 @@ export const PRODUCTS: Record<string, Product> = {
     feedbackSubject: "[Orange Taxi] Feedback",
     ogTagline:
       "Electric ride-hailing platform with real-time dispatch, dynamic QR payments, and PWA client.",
+    changelog: [],
   },
   "autonomous-rescue-robot": {
     slug: "autonomous-rescue-robot",
@@ -111,6 +112,7 @@ export const PRODUCTS: Record<string, Product> = {
     feedbackSubject: "[Autonomous Rescue Robot] Feedback",
     ogTagline:
       "Telemetry, obstacle sensing, and path planning in GPS-denied environments.",
+    changelog: [],
   },
   "animal-detection": {
     slug: "animal-detection",
@@ -139,6 +141,7 @@ export const PRODUCTS: Record<string, Product> = {
     feedbackSubject: "[Animal Detection] Feedback",
     ogTagline:
       "Real-time computer vision alerts to prevent animal collisions on railway tracks.",
+    changelog: [],
   },
 };
 

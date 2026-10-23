@@ -218,6 +218,26 @@ Dynamic SVG badges are generated on the fly via `/badge/<slug>` in the workshop 
 
 ---
 
+## 📜 Per-Product Changelog & Atom Feeds
+
+Each product supports a structured changelog at `/built/<slug>/changelog` with an automated Atom feed at `/built/<slug>/changelog/feed.xml`.
+
+### Data Format (`data/products.ts`)
+```typescript
+changelog: [
+  {
+    date: "2026-10-23", // ISO YYYY-MM-DD
+    title: "Real-time dispatch optimization",
+    note: "Migrated dispatch channels to Supabase Broadcast for sub-100ms driver synchronization.",
+  },
+]
+```
+
+> [!NOTE]
+> All products currently ship with an empty `changelog: []` array (`[PLACEHOLDER]`). Release notes are never invented; entries appear on the site and in the feed once real modifications are added to `data/products.ts`.
+
+---
+
 ## 🚢 Deploying to Vercel
 
 1. Push to GitHub: `https://github.com/akshat0709/builtbyakshat.git`.

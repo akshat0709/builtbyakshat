@@ -236,6 +236,52 @@ export default function ProductDetailPage({ params }: ProductPageProps) {
           </div>
         )}
 
+        {/* Per-Product Changelog Summary: Hidden if empty */}
+        {product.changelog && product.changelog.length > 0 && (
+          <div className="mb-8 pt-6 border-t border-ink/15 dark:border-cream/15">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-xs font-mono uppercase tracking-wider text-teal font-bold block">
+                What&apos;s New
+              </h2>
+              <Link
+                href={`/built/${product.slug}/changelog`}
+                className="text-xs font-mono font-bold text-teal underline underline-offset-4 hover:text-ink dark:hover:text-cream"
+              >
+                Full changelog ({product.changelog.length}) →
+              </Link>
+            </div>
+
+            <div className="space-y-2.5">
+              {[...product.changelog]
+                .sort((a, b) => b.date.localeCompare(a.date))
+                .slice(0, 3)
+                .map((entry, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-xl bg-paper dark:bg-ink-deep border-ink border text-xs sm:text-sm font-body shadow-hard-sm"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="font-display font-bold text-ink dark:text-cream">
+                        {entry.title}
+                      </span>
+                      <time
+                        dateTime={entry.date}
+                        className="font-mono text-[10px] text-ink/60 dark:text-cream/60"
+                      >
+                        {entry.date}
+                      </time>
+                    </div>
+                    {entry.note && (
+                      <p className="text-xs text-ink/75 dark:text-cream/70 leading-relaxed">
+                        {entry.note}
+                      </p>
+                    )}
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
         {/* Real Media Slots & Field Proof */}
         <MediaGallery media={product.media} productName={product.name} />
 
