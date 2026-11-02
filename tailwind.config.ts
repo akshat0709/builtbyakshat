@@ -11,6 +11,18 @@ const config: Config = {
     extend: {
       colors: {
         cream: "#FFF6E5",
+        stone: {
+          light: "#EEEAE6",
+          DEFAULT: "#E8E4E0",
+          mid: "#DED8D4",
+          line: "#D5CDCA",
+        },
+        charcoal: {
+          light: "#252121",
+          DEFAULT: "#1A1818",
+          dark: "#121111",
+          border: "#302A2A",
+        },
         ink: "#1A1A1A",
         "ink-deep": "#121212",
         "ink-card": "#1E1E1E",
@@ -20,6 +32,13 @@ const config: Config = {
         teal: "#0A524D",
         "cream-light": "#FFFDF9",
         paper: "#FFFFFF",
+        door: {
+          web: "#22304A",
+          robot: "#4A3540",
+          vision: "#4E5A47",
+          assist: "#8C4826",
+          lab: "#201F1D",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "Space Grotesk", "sans-serif"],

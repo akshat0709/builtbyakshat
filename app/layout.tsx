@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
 import { CursorBlob } from "@/components/ui/CursorBlob";
+import { PullCord } from "@/components/ui/PullCord";
 import { PageTransition } from "@/components/ui/PageTransition";
 
 const spaceGrotesk = Space_Grotesk({
@@ -151,6 +152,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <CursorBlob />
+        <PullCord />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-h-screen">
           <Navbar />
           <div className="flex-1">

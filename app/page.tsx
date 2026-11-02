@@ -1,8 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { Hero } from "@/components/ui/Hero";
-import { HomeTeaserTiles } from "@/components/ui/HomeTeaserTiles";
+import { HomeInteractiveView } from "@/components/ui/HomeInteractiveView";
 import { AnalyticsTracker } from "@/components/analytics/AnalyticsTracker";
 import { getProductByRef } from "@/data/products";
 import { builderProfile } from "@/data/profile";
@@ -96,8 +95,7 @@ export default function HomePage({ searchParams }: PageProps) {
   return (
     <main id="main-content" className="py-2">
       <AnalyticsTracker refSlug="none" />
-      <Hero />
-      <HomeTeaserTiles />
+      <HomeInteractiveView />
     </main>
   );
 }

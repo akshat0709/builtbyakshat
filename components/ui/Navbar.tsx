@@ -24,7 +24,25 @@ const NAV_ITEMS: NavItem[] = [
 export function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [bengaluruTime, setBengaluruTime] = useState("");
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Live ticking Bengaluru time
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      };
+      setBengaluruTime(now.toLocaleTimeString("en-US", options).toLowerCase());
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -87,8 +105,17 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Right Side: Theme Toggle & Mobile Menu Hamburger */}
+        {/* Right Side: Clock Chip, Theme Toggle & Mobile Menu Hamburger */}
         <div className="flex items-center gap-2.5">
+          {bengaluruTime && (
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm font-mono text-xs font-bold text-ink dark:text-cream">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" aria-hidden="true" />
+              <span className="tnum">{bengaluruTime}</span>
+              <span className="opacity-40">•</span>
+              <span className="text-[11px]">BLR</span>
+            </div>
+          )}
+
           <ThemeToggle />
 
           <button
