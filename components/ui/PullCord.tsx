@@ -1,117 +1,64 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { getTheme, hapticTick, onThemeChange, playSwitchClick, toggleTheme } from "@/lib/theme";
 
-// Web Audio API synthesized mechanical switch click (no external audio files needed)
-function playSwitchClick(isDark: boolean) {
-  try {
-    const AudioContext = window.AudioContext || (window as unknown as { webkitAudioContext: typeof window.AudioContext }).webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+/**
+ * Hanging ceiling pull-cord light switch.
+ *
+ * - Verlet rope (position-based, N segments, iterative distance constraints).
+ * - The ceiling anchor sits on a damped spring: pulling the cord past ~78% of
+ *   the travel trips the switch (click + haptic), then it snaps back up.
+ * - The canvas never takes pointer events itself. A window-level hit test
+ *   decides whether a press landed on the cord, so the navbar controls that
+ *   sit underneath the canvas stay clickable.
+ */
 
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(isDark ? 800 : 1200, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(isDark ? 200 : 350, ctx.currentTime + 0.04);
-
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.045);
-  } catch {
-    // AudioContext may be blocked before first user gesture
-  }
+interface Point {
+  x: number;
+  y: number;
+  px: number;
+  py: number;
+  /** inverse mass: 0 = pinned */
+  w: number;
 }
+
+const N = 22;
+const GRAVITY = 2600; // px/s²
+const ITERATIONS = 16;
+const GRAB_RADIUS = 30;
 
 export function PullCord() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const tugRef = useRef<() => void>(() => {});
 
-  const [isDark, setIsDark] = useState<boolean>(false);
-  const [isPulling, setIsPulling] = useState<boolean>(false);
+  const [isDark, setIsDark] = useState(false);
 
-  // Sync initial theme on mount
   useEffect(() => {
-    const isDarkTheme =
-      document.documentElement.classList.contains("dark") ||
-      localStorage.getItem("portfolio-theme") === "dark" ||
-      (!("portfolio-theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-    setIsDark(isDarkTheme);
-    if (isDarkTheme) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    setIsDark(getTheme() === "dark");
+    return onThemeChange((t) => setIsDark(t === "dark"));
   }, []);
 
-  const toggleTheme = (triggerAudio = true) => {
-    const nextDark = !document.documentElement.classList.contains("dark");
-    setIsDark(nextDark);
-
-    if (triggerAudio) {
-      playSwitchClick(nextDark);
-      if (typeof navigator !== "undefined" && navigator.vibrate) {
-        try {
-          navigator.vibrate(14);
-        } catch {}
-      }
-    }
-
-    const applyTheme = () => {
-      if (nextDark) {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("portfolio-theme", "dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("portfolio-theme", "light");
-      }
-    };
-
-    if (typeof document !== "undefined" && "startViewTransition" in document) {
-      (document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(applyTheme);
-    } else {
-      applyTheme();
-    }
-  };
-
-  // Verlet physics rope loop
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const N = 24; // segments
-    const G = 4500; // gravity px/s²
-    const ITER = 14; // constraint resolution passes
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let dpr = 1;
-    let W = 160;
-    let H = 340;
-    let L = 160;
-    let EXT_MAX = 56;
-    let HIDDEN = 50;
+    let W = 120;
+    let H = 320;
+    let L = 160; // visible rest length
+    let EXT_MAX = 56; // how far the anchor can be pulled down
+    let HIDDEN = 72; // rope length hidden above the viewport
     let seg = 8;
-    let ax = 80;
-    let thick = 3.2;
-
-    interface Point {
-      x: number;
-      y: number;
-      px: number;
-      py: number;
-      w: number;
-    }
+    let ax = 60;
+    let thick = 3;
 
     let pts: Point[] = [];
     let ext = 0;
@@ -120,27 +67,22 @@ export function PullCord() {
     let grab = -1;
     let target: { x: number; y: number } | null = null;
     let t = 0;
-    let rafId = 0;
-    let lastTime = performance.now();
+    let raf = 0;
+    let last = performance.now();
+    let hoverCursor = false;
 
     function layout() {
       if (!canvas || !container) return;
       const vw = window.innerWidth;
       const vh = window.innerHeight;
+      const wide = vw >= 1024;
 
-      if (vw >= 1024) {
-        L = Math.min(220, Math.max(160, vh * 0.25));
-        EXT_MAX = 64;
-        thick = 3.5;
-      } else {
-        L = Math.min(170, Math.max(130, vh * 0.18));
-        EXT_MAX = 48;
-        thick = 3.0;
-      }
-
-      HIDDEN = EXT_MAX + 16;
-      W = 160;
-      H = Math.round(L + EXT_MAX + 100);
+      L = wide ? Math.min(210, Math.max(150, vh * 0.24)) : Math.min(150, Math.max(110, vh * 0.16));
+      EXT_MAX = wide ? 64 : 48;
+      thick = wide ? 3.4 : 3;
+      HIDDEN = EXT_MAX + 18;
+      W = 120;
+      H = Math.round(L + EXT_MAX + 60);
 
       container.style.height = `${H}px`;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -148,50 +90,62 @@ export function PullCord() {
       canvas.height = Math.round(H * dpr);
 
       ax = W / 2;
-      const total = L + HIDDEN;
-      seg = total / N;
-
+      seg = (L + HIDDEN) / N;
       pts = [];
       for (let i = 0; i <= N; i++) {
-        const x = ax;
         const y = -HIDDEN + i * seg;
-        pts.push({ x, y, px: x, py: y, w: i === 0 ? 0 : i === N ? 0.3 : 1 });
+        // The knob end is heavier (smaller inverse mass) so it swings like a weight.
+        pts.push({ x: ax, y, px: ax, py: y, w: i === 0 ? 0 : i === N ? 0.35 : 1 });
       }
     }
 
     layout();
     window.addEventListener("resize", layout);
 
-    function stepPhysics(dt: number) {
+    function trip() {
+      armed = false;
+      const next = getTheme() === "dark" ? "light" : "dark";
+      playSwitchClick(next === "dark");
+      hapticTick(14);
+      toggleTheme();
+    }
+
+    // Keyboard / button activation: play the click and give the cord a visible tug.
+    tugRef.current = () => {
+      extV = EXT_MAX * 14; // impulse; spring brings it back without re-tripping
+      armed = false;
+    };
+
+    function step(dt: number) {
       t += dt;
 
-      // Spring physics on the ceiling anchor when not pulled
       if (grab < 0) {
-        const K = 740;
-        const C = 22;
+        // Damped spring pulls the anchor back up to the ceiling.
+        const K = 520;
+        const C = 20;
         extV += (-K * ext - C * extV) * dt;
         ext += extV * dt;
+        if (ext < 0) {
+          ext = 0;
+          extV = Math.max(0, extV);
+        }
+        if (ext > EXT_MAX) {
+          ext = EXT_MAX;
+          extV = Math.min(0, extV);
+        }
       }
 
-      // Switch trigger threshold
-      if (ext > EXT_MAX * 0.78 && armed) {
-        armed = false;
-        toggleTheme(true);
-      }
-      if (ext < EXT_MAX * 0.25) {
-        armed = true;
-      }
+      if (grab >= 0 && armed && ext > EXT_MAX * 0.78) trip();
+      if (ext < EXT_MAX * 0.2) armed = true;
 
-      // Pin anchor
       const anchor = pts[0];
       if (anchor) {
         anchor.x = anchor.px = ax;
         anchor.y = anchor.py = -HIDDEN + ext;
       }
 
-      // Gentle ambient breeze
-      const wind = Math.sin(t * 0.7) * 8 + Math.sin(t * 1.8 + 1.2) * 4;
-      const damp = grab >= 0 ? 0.99 : 0.985;
+      const wind = reducedMotion ? 0 : Math.sin(t * 0.7) * 10 + Math.sin(t * 1.9 + 1.2) * 5;
+      const damp = grab >= 0 ? 0.985 : 0.992;
 
       for (let i = 1; i <= N; i++) {
         if (i === grab) continue;
@@ -200,245 +154,261 @@ export function PullCord() {
         const vx = (p.x - p.px) * damp;
         const vy = (p.y - p.py) * damp;
         p.px = p.x;
-        p.y = p.y;
+        p.py = p.y;
         p.x += vx + wind * dt * dt * (i / N);
-        p.y += vy + G * dt * dt;
+        p.y += vy + GRAVITY * dt * dt;
       }
 
-      if (grab >= 0 && target && pts[grab]) {
+      if (grab >= 0 && target) {
         const g = pts[grab];
-        g.px = g.x;
-        g.py = g.y;
-        g.x = target.x;
-        g.y = target.y;
+        if (g) {
+          g.px = g.x;
+          g.py = g.y;
+          g.x = target.x;
+          g.y = target.y;
+        }
       }
 
-      // Distance constraints
-      for (let k = 0; k < ITER; k++) {
+      for (let k = 0; k < ITERATIONS; k++) {
         for (let i = 0; i < N; i++) {
-          const p1 = pts[i];
-          const p2 = pts[i + 1];
-          if (!p1 || !p2) continue;
-
-          const dx = p2.x - p1.x;
-          const dy = p2.y - p1.y;
-          const dist = Math.hypot(dx, dy) || 0.001;
+          const a = pts[i];
+          const b = pts[i + 1];
+          if (!a || !b) continue;
+          const wa = i === grab ? 0 : a.w;
+          const wb = i + 1 === grab ? 0 : b.w;
+          const wsum = wa + wb;
+          if (wsum === 0) continue;
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.hypot(dx, dy) || 0.0001;
           const diff = (dist - seg) / dist;
-
-          const w1 = p1.w;
-          const w2 = p2.w;
-          const wTotal = w1 + w2;
-          if (wTotal === 0) continue;
-
-          if (i !== 0 && i !== grab) {
-            p1.x += dx * diff * (w1 / wTotal);
-            p1.y += dy * diff * (w1 / wTotal);
-          }
-          if (i + 1 !== grab) {
-            p2.x -= dx * diff * (w2 / wTotal);
-            p2.y -= dy * diff * (w2 / wTotal);
-          }
+          a.x += dx * diff * (wa / wsum);
+          a.y += dy * diff * (wa / wsum);
+          b.x -= dx * diff * (wb / wsum);
+          b.y -= dy * diff * (wb / wsum);
         }
       }
     }
 
     function render() {
-      if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.scale(dpr, dpr);
+      if (!ctx || !canvas || pts.length < 2) return;
+      const dark = document.documentElement.classList.contains("dark");
+      const ink = dark ? "#FFF6E5" : "#1A1A1A";
+      const rope = dark ? "#CFC6BE" : "#3A3232";
+      const braid = dark ? "#8D847D" : "#8A7B70";
+      const shadow = dark ? "rgba(0,0,0,0.55)" : "rgba(26,26,26,0.18)";
 
-      if (pts.length < 2) {
-        ctx.restore();
-        return;
-      }
-
-      const isDarkMode = document.documentElement.classList.contains("dark");
-      const ropeColor = isDarkMode ? "#B5A8A8" : "#4A3F3F";
-      const knotColor = isDarkMode ? "#E8E4E0" : "#1A1818";
-      const knobColor = isDarkMode ? "#FFD13B" : "#1A1818";
-      const shadowColor = isDarkMode ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.2)";
-
-      // Draw drop shadow
-      ctx.beginPath();
-      ctx.strokeStyle = shadowColor;
-      ctx.lineWidth = thick + 1;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      const startPt = pts[0];
-      if (startPt) {
-        ctx.moveTo(startPt.x + 2, startPt.y + 3);
-        for (let i = 1; i <= N; i++) {
-          const p = pts[i];
-          if (p) ctx.lineTo(p.x + 2, p.y + 3);
-        }
-        ctx.stroke();
-      }
 
-      // Draw braided rope cord
-      ctx.beginPath();
-      ctx.strokeStyle = ropeColor;
+      const path = (ox: number, oy: number) => {
+        ctx.beginPath();
+        const p0 = pts[0]!;
+        ctx.moveTo(p0.x + ox, p0.y + oy);
+        for (let i = 1; i < N; i++) {
+          const p = pts[i]!;
+          const q = pts[i + 1]!;
+          ctx.quadraticCurveTo(p.x + ox, p.y + oy, (p.x + q.x) / 2 + ox, (p.y + q.y) / 2 + oy);
+        }
+        const end = pts[N]!;
+        ctx.lineTo(end.x + ox, end.y + oy);
+      };
+
+      // Hard offset shadow (no blur).
+      path(3, 3);
+      ctx.strokeStyle = shadow;
       ctx.lineWidth = thick;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      if (startPt) {
-        ctx.moveTo(startPt.x, startPt.y);
-        for (let i = 1; i <= N; i++) {
-          const p = pts[i];
-          if (p) ctx.lineTo(p.x, p.y);
-        }
-        ctx.stroke();
-      }
+      ctx.stroke();
 
-      // Draw decorative brass collar & wooden knob at the end of the rope
-      const last = pts[N];
-      if (last) {
-        // Brass collar
-        ctx.beginPath();
-        ctx.fillStyle = "#D8A84E";
-        ctx.arc(last.x, last.y - 12, 3.5, 0, Math.PI * 2);
-        ctx.fill();
+      // Cord.
+      path(0, 0);
+      ctx.strokeStyle = rope;
+      ctx.lineWidth = thick;
+      ctx.stroke();
 
-        // Acorn / teardrop knob
-        ctx.beginPath();
-        ctx.fillStyle = knobColor;
-        ctx.shadowColor = shadowColor;
-        ctx.shadowBlur = 4;
-        ctx.shadowOffsetY = 2;
+      // Braid twist.
+      path(0, 0);
+      ctx.setLineDash([2.5, 3.5]);
+      ctx.strokeStyle = braid;
+      ctx.lineWidth = thick * 0.45;
+      ctx.stroke();
+      ctx.setLineDash([]);
 
-        ctx.ellipse(last.x, last.y, 6.5, 11, 0, 0, Math.PI * 2);
-        ctx.fill();
+      const end = pts[N]!;
+      const prev = pts[N - 1]!;
+      const angle = Math.atan2(end.y - prev.y, end.x - prev.x) - Math.PI / 2;
 
-        // Highlight ring on the knob
-        ctx.shadowColor = "transparent";
-        ctx.beginPath();
-        ctx.strokeStyle = isDarkMode ? "#1A1818" : "#FFD13B";
-        ctx.lineWidth = 1.5;
-        ctx.arc(last.x, last.y, 3, 0, Math.PI * 2);
-        ctx.stroke();
+      ctx.save();
+      ctx.translate(end.x, end.y);
+      ctx.rotate(angle);
 
-        // Keep invisible hit button anchored directly over the knob for accessibility
-        if (buttonRef.current) {
-          buttonRef.current.style.transform = `translate(${last.x - 22}px, ${last.y - 22}px)`;
-        }
-      }
+      // Knob hard shadow.
+      ctx.fillStyle = shadow;
+      ctx.beginPath();
+      ctx.ellipse(3, 15, 7.5, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
 
+      // Brass ferrule.
+      ctx.fillStyle = "#D8A84E";
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(-4, -2, 8, 6, 1.5);
+      ctx.fill();
+      ctx.stroke();
+
+      // Turned-wood knob with a 2px ink outline.
+      ctx.fillStyle = dark ? "#FFD13B" : "#C9894B";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.ellipse(0, 12, 7.5, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Grain line.
+      ctx.strokeStyle = dark ? "rgba(26,26,26,0.35)" : "rgba(26,26,26,0.3)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-3, 6);
+      ctx.quadraticCurveTo(-1, 12, -3, 19);
+      ctx.stroke();
       ctx.restore();
+
+      // Keep the accessible button glued to the knob.
+      if (buttonRef.current) {
+        buttonRef.current.style.transform = `translate(${end.x - 22}px, ${end.y - 10}px)`;
+      }
     }
 
     function loop(now: number) {
-      const dt = Math.min((now - lastTime) / 1000, 0.033);
-      lastTime = now;
-      stepPhysics(dt);
+      const dt = Math.min((now - last) / 1000, 1 / 30);
+      last = now;
+      // Two substeps keep the rope stable at low frame rates.
+      step(dt / 2);
+      step(dt / 2);
       render();
-      rafId = requestAnimationFrame(loop);
+      raf = requestAnimationFrame(loop);
     }
-    rafId = requestAnimationFrame(loop);
+    raf = requestAnimationFrame(loop);
 
-    // Pointer event listeners on canvas to grab & swing
-    function handlePointerDown(e: PointerEvent) {
-      const rect = canvas?.getBoundingClientRect();
-      if (!rect) return;
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    const local = (e: PointerEvent) => {
+      const r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
 
-      // Find nearest point within radius
+    function nearest(x: number, y: number) {
       let best = -1;
-      let minD = 40;
-      for (let i = Math.floor(N * 0.4); i <= N; i++) {
+      let bestD = GRAB_RADIUS;
+      for (let i = Math.floor(N * 0.35); i <= N; i++) {
         const p = pts[i];
         if (!p) continue;
-        const d = Math.hypot(p.x - x, p.y - y);
-        if (d < minD) {
-          minD = d;
+        // Knob centre sits ~12px below the last point.
+        const py = i === N ? p.y + 12 : p.y;
+        const d = Math.hypot(p.x - x, py - y);
+        if (d < bestD) {
+          bestD = d;
           best = i;
         }
       }
-
-      if (best >= 0) {
-        grab = best;
-        target = { x, y };
-        setIsPulling(true);
-        canvas?.setPointerCapture(e.pointerId);
-      }
+      return best;
     }
 
-    function handlePointerMove(e: PointerEvent) {
+    function onDown(e: PointerEvent) {
+      if (e.button !== 0) return;
+      const { x, y } = local(e);
+      if (x < -GRAB_RADIUS || x > W + GRAB_RADIUS || y > H) return;
+      const idx = nearest(x, y);
+      if (idx < 0) return;
+      e.preventDefault();
+      e.stopPropagation();
+      grab = idx;
+      target = { x, y };
+      document.documentElement.style.cursor = "grabbing";
+    }
+
+    function onMove(e: PointerEvent) {
+      const { x, y } = local(e);
       if (grab >= 0 && target) {
-        const rect = canvas?.getBoundingClientRect();
-        if (!rect) return;
-        target.x = e.clientX - rect.left;
-        target.y = e.clientY - rect.top;
-
-        // When dragged downwards past standard length, pull the anchor extension
-        const dy = target.y - (L - 10);
-        if (dy > 0) {
-          ext = Math.min(EXT_MAX, dy * 0.8);
-          extV = 0;
-        }
+        target.x = x;
+        target.y = y;
+        // Dragging below the rest length pulls the anchor down the ceiling slot.
+        const restY = L + (grab - N) * seg;
+        const dy = y - restY;
+        ext = Math.max(0, Math.min(EXT_MAX, dy * 0.9));
+        extV = 0;
+        return;
+      }
+      if (e.pointerType !== "mouse") return;
+      const over = x >= 0 && x <= W && y >= 0 && y <= H && nearest(x, y) >= 0;
+      if (over !== hoverCursor) {
+        hoverCursor = over;
+        document.documentElement.style.cursor = over ? "grab" : "";
       }
     }
 
-    function handlePointerUp(e: PointerEvent) {
-      if (grab >= 0) {
-        grab = -1;
-        target = null;
-        setIsPulling(false);
-        try {
-          canvas?.releasePointerCapture(e.pointerId);
-        } catch {}
-      }
+    function onUp() {
+      if (grab < 0) return;
+      grab = -1;
+      target = null;
+      document.documentElement.style.cursor = hoverCursor ? "grab" : "";
     }
 
-    canvas.addEventListener("pointerdown", handlePointerDown);
-    canvas.addEventListener("pointermove", handlePointerMove);
-    canvas.addEventListener("pointerup", handlePointerUp);
-    canvas.addEventListener("pointercancel", handlePointerUp);
+    // The canvas is pointer-transparent, so stop the page scrolling while a finger holds the cord.
+    function onTouchMove(e: TouchEvent) {
+      if (grab >= 0) e.preventDefault();
+    }
+
+    window.addEventListener("pointerdown", onDown, { capture: true, passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      cancelAnimationFrame(raf);
       window.removeEventListener("resize", layout);
-      if (canvas) {
-        canvas.removeEventListener("pointerdown", handlePointerDown);
-        canvas.removeEventListener("pointermove", handlePointerMove);
-        canvas.removeEventListener("pointerup", handlePointerUp);
-        canvas.removeEventListener("pointercancel", handlePointerUp);
-      }
+      window.removeEventListener("pointerdown", onDown, { capture: true });
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      document.documentElement.style.cursor = "";
     };
   }, []);
+
+  const onButton = () => {
+    const next = getTheme() === "dark" ? "light" : "dark";
+    playSwitchClick(next === "dark");
+    hapticTick(14);
+    tugRef.current();
+    toggleTheme();
+  };
 
   return (
     <div
       ref={containerRef}
-      className="fixed top-0 right-4 sm:right-10 md:right-14 z-50 pointer-events-none select-none w-40"
+      className="fixed top-0 right-2 sm:right-8 md:right-12 z-40 w-[120px] pointer-events-none select-none print:hidden"
       style={{ height: 320 }}
-      aria-label="Light / Dark Switch Cord"
     >
       <canvas
         ref={canvasRef}
-        className="w-full h-full pointer-events-auto cursor-grab active:cursor-grabbing touch-none"
-        title="Pull cord to toggle dark / light mode"
+        className="w-full h-full pointer-events-none touch-none"
+        aria-hidden="true"
       />
-
-      {/* Accessible button overlaid over the physical knob */}
       <button
         ref={buttonRef}
         type="button"
         role="switch"
         aria-checked={isDark}
-        aria-label="Toggle dark mode (pull the cord)"
-        onClick={() => toggleTheme(true)}
-        className="absolute top-0 left-0 w-11 h-11 rounded-full pointer-events-auto opacity-0 focus-visible:opacity-100 focus-visible:bg-sunny/80 focus-visible:ring-2 focus-visible:ring-ink focus-visible:outline-none transition-opacity"
+        aria-label="Pull cord light switch: toggle dark mode"
+        title="Pull the cord to switch the lights"
+        onClick={onButton}
+        className="absolute top-0 left-0 w-11 h-11 rounded-full pointer-events-none opacity-0 focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink dark:focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-sunny"
       >
-        <span className="sr-only">Toggle Dark Mode</span>
+        <span className="sr-only">Toggle dark mode</span>
       </button>
-
-      {/* Subtle indicator pill when pulling */}
-      {isPulling && (
-        <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-charcoal text-stone-light text-[10px] font-mono font-bold whitespace-nowrap shadow-hard-sm pointer-events-none animate-bounce">
-          Release to switch
-        </div>
-      )}
     </div>
   );
 }

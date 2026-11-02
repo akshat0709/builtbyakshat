@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -33,22 +34,36 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   if (!isOpen) return null;
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(myEmail);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(myEmail);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard can be blocked; the address is still visible to select by hand.
+    }
   };
+
+  const quickActions = [
+    { label: "Email", hint: "Open mail app", href: `mailto:${myEmail}`, icon: "✉" },
+    { label: "GitHub", hint: "akshat0709", href: "https://github.com/akshat0709", icon: "⌥", external: true },
+    { label: "Save contact", hint: ".vcf card", href: "/contact.vcf", icon: "⤓", download: true },
+  ];
 
   const mailtoSubject = encodeURIComponent(`[${projectTopic}] Project Inquiry from ${name || "Visitor"}`);
   const mailtoBody = encodeURIComponent(
-    `Hi Akshat,\n\n${message || "I checked out your portfolio and wanted to connect about a software build or role."}\n\n— ${name || "Visitor"}\n${email || ""}`
+    `Hi Akshat,\n\n${message || "I came across something you built and wanted to say hello."}\n\n— ${name || "Visitor"}\n${email || ""}`
   );
   const mailtoUrl = `mailto:${myEmail}?subject=${mailtoSubject}&body=${mailtoBody}`;
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  // Portal to <body>: PageTransition applies a transform, which would otherwise
+  // turn this fixed overlay into one positioned relative to the page wrapper.
+  return createPortal(
     <AnimatePresence>
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto"
+        className="fixed inset-0 z-50 flex justify-end"
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-modal-title"
@@ -59,16 +74,16 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+          className="fixed inset-0 bg-ink/70"
         />
 
         {/* Modal Card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-lg bg-paper dark:bg-charcoal border-2 border-charcoal dark:border-stone-line rounded-2xl shadow-hard-xl dark:shadow-[8px_8px_0px_#FFF6E5] overflow-hidden z-10 my-auto"
+          initial={{ x: "105%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "105%" }}
+          transition={{ type: "spring", stiffness: 320, damping: 32 }}
+          className="relative z-10 h-full w-full max-w-md overflow-y-auto bg-paper dark:bg-charcoal border-l-2 border-ink dark:border-stone-line shadow-[-8px_0px_0px_#1A1A1A] dark:shadow-[-8px_0px_0px_#FFF6E5]"
         >
           {/* Header */}
           <div className="p-6 bg-stone-light dark:bg-charcoal-light border-b-2 border-charcoal dark:border-stone-line flex items-center justify-between">
@@ -80,13 +95,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 id="contact-modal-title"
                 className="font-display font-black text-2xl text-charcoal dark:text-stone-light tracking-tight"
               >
-                Start a Conversation
+                Say hello
               </h3>
             </div>
 
             <button
               type="button"
               onClick={onClose}
+              autoFocus
               className="w-9 h-9 rounded-full bg-paper dark:bg-charcoal border-2 border-charcoal dark:border-stone-line font-mono text-xs font-bold text-charcoal dark:text-stone-light flex items-center justify-center hover:bg-sunny transition-colors shadow-hard-sm"
               aria-label="Close dialog"
             >
@@ -96,6 +112,23 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
           {/* Form Body */}
           <div className="p-6 sm:p-8 space-y-4">
+            {/* Quick actions */}
+            <div className="grid grid-cols-3 gap-2.5">
+              {quickActions.map((a) => (
+                <a
+                  key={a.label}
+                  href={a.href}
+                  {...(a.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(a.download ? { download: "akshat-gupta.vcf" } : {})}
+                  className="flex flex-col items-start gap-1 p-3 rounded-xl bg-cream-light dark:bg-ink-card border-2 border-ink dark:border-stone-line shadow-hard-sm dark:shadow-hard-dark-sm hover:bg-sunny/50 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+                >
+                  <span aria-hidden="true" className="font-mono text-lg leading-none">{a.icon}</span>
+                  <span className="font-display font-bold text-sm text-ink dark:text-cream">{a.label}</span>
+                  <span className="font-mono text-[10px] text-ink/60 dark:text-cream/60">{a.hint}</span>
+                </a>
+              ))}
+            </div>
+
             {/* Quick Copy Button */}
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-stone-light/60 dark:bg-charcoal-light border border-charcoal/20 dark:border-stone-line/20">
               <span className="font-mono text-xs text-charcoal dark:text-stone-light font-bold truncate">
@@ -104,11 +137,16 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               <button
                 type="button"
                 onClick={handleCopyEmail}
-                className="px-3 py-1 rounded-full bg-sunny text-charcoal border border-charcoal font-mono text-xs font-bold hover:bg-sunny/80 transition-colors shadow-sm"
+                className="px-3 py-1 rounded-full bg-sunny text-charcoal border-2 border-ink font-mono text-xs font-bold active:translate-y-px transition-colors"
+                aria-live="polite"
               >
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
+
+            <p className="pt-2 font-mono text-[11px] font-bold uppercase tracking-wider text-ink/50 dark:text-cream/50">
+              Or write a note
+            </p>
 
             <div>
               <label htmlFor="contact-name" className="block font-mono text-xs font-bold text-charcoal/70 dark:text-stone-light/70 uppercase mb-1">
@@ -151,7 +189,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 <option value="Orange Taxi / Full-Stack PWA">Orange Taxi / Full-Stack PWA</option>
                 <option value="Autonomous Robotics & Firmware">Autonomous Robotics & Firmware</option>
                 <option value="Computer Vision & AI Telemetry">Computer Vision & AI Telemetry</option>
-                <option value="General Engineering & Early Roles">General Engineering & Early Roles</option>
+                <option value="Something you built">Something you built</option>
               </select>
             </div>
 
@@ -185,6 +223,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

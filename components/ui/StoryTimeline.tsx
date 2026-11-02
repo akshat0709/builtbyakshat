@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Odometer } from "@/components/ui/Odometer";
 
 interface Milestone {
   id: string;
@@ -24,24 +25,24 @@ const MILESTONES: Milestone[] = [
     year: "2026",
     timeframe: "Sep 2026 — Present",
     headline: "Orange Taxi: Electric Ride-Hailing Dispatch",
-    organization: "Orange Taxi (Pre-Launch Electric Fleet)",
+    organization: "Orange Taxi (pre-launch electric fleet)",
     role: "Full-Stack Developer Intern",
-    location: "Delhi NCR · Remote",
+    location: "Delhi NCR",
     summary:
-      "Designed and delivered the complete production software stack as a PWA for a premium 100% electric cab service. Implemented sub-100ms real-time dispatch, live driver coordinate telemetry via Supabase Realtime WebSocket channels, and an in-app dynamic UPI QR payment flow for driver cash handovers.",
+      "Building the dispatch engine for an all-electric cab service: realtime ride requests and live driver locations over Supabase Realtime channels, Nitro server routes for dispatch logic, and an in-app UPI QR flow for driver cash handovers.",
     highlights: [
       "Supabase Realtime dispatch engine & in-ride chat",
-      "Dynamic UPI QR payment handover reconciliation",
-      "TanStack Start + React + PostgreSQL architecture",
+      "UPI QR cash-handover reconciliation",
+      "Next.js + Supabase Realtime + Nitro backends",
     ],
     color: "#FFD13B", // sunny
-    badge: "Current: Internship",
+    badge: "Now: Internship",
     tabLabel: "Now (Intern)",
   },
   {
     id: "rescue-robot-2026",
     year: "2026",
-    timeframe: "Early — Mid 2026",
+    timeframe: "Early & Mid 2026",
     headline: "Autonomous Search & Rescue Robot",
     organization: "Independent Robotics Engineering",
     role: "Robotics & Embedded Systems Developer",
@@ -85,7 +86,7 @@ const MILESTONES: Milestone[] = [
     role: "B.E. Student (IoT, Cybersecurity & Blockchain)",
     location: "Bengaluru, India",
     summary:
-      "Pursuing a Bachelor of Engineering with an exceptional 8.97 CGPA. Deep-diving into operating systems, distributed architectures, network cryptography, microcontroller assembly, and decentralized protocols while building production systems.",
+      "Bachelor of Engineering in Computer Science (IoT, Cybersecurity & Blockchain), CGPA 8.97. Deep-diving into operating systems, distributed architectures, network cryptography, microcontroller assembly, and decentralized protocols while building production systems.",
     highlights: [
       "Academic Standing: CGPA 8.97 / 10",
       "Core focus: IoT, Cybersecurity & Blockchain (Class of '28)",
@@ -102,13 +103,13 @@ const MILESTONES: Milestone[] = [
     headline: "National INSPIRE Award for Assistive Mobility",
     organization: "Department of Science & Technology, Govt. of India",
     role: "Hardware & Safety Designer",
-    location: "New Delhi, India",
+    location: "India",
     summary:
-      "Engineered an intelligent assistive smart wheelchair equipped with collision-prevention sensors and emergency automated braking for individuals with severe mobility impairments. Recognized nationally and granted the Rs 10,000 INSPIRE Award.",
+      "Built an assistive smart wheelchair with obstacle-sensing and automatic emergency stopping for people with limited mobility. Recognised with the National INSPIRE Award and a Rs 10,000 prize from the Department of Science & Technology.",
     highlights: [
-      "Awarded Rs 10,000 national merit grant",
-      "Selected at the National Science Exhibition",
-      "Ultrasonic safety mesh and intuitive navigation logic",
+      "National INSPIRE Award (DST, Govt. of India)",
+      "Rs 10,000 prize",
+      "Ultrasonic obstacle sensing + auto stop",
     ],
     color: "#8C4826", // terracotta
     badge: "National Award",
@@ -126,7 +127,7 @@ export function StoryTimeline() {
       <div className="mb-12">
         <div className="flex items-center gap-2 mb-2">
           <span className="px-3 py-1 rounded-full bg-stone-mid dark:bg-charcoal-light text-charcoal dark:text-stone-light font-mono text-xs font-bold border border-charcoal/20">
-            03 / Timeline
+            03 / My Story
           </span>
           <span className="font-mono text-xs uppercase tracking-wider text-charcoal/60 dark:text-stone-light/60">
             Engineering Journey
@@ -134,10 +135,10 @@ export function StoryTimeline() {
         </div>
 
         <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-charcoal dark:text-stone-light tracking-tight">
-          Let&apos;s go back in time.
+          Let&apos;s roll back the years.
         </h2>
         <p className="font-body text-sm sm:text-base text-charcoal/75 dark:text-stone-light/75 max-w-xl mt-3 leading-relaxed">
-          From a national science exhibition award to locomotive computer vision and production electric cab dispatch.
+          From a smart wheelchair in 2022 to realtime cab dispatch today. Pick a milestone and watch the counter roll.
         </p>
       </div>
 
@@ -150,11 +151,31 @@ export function StoryTimeline() {
           </span>
 
           {/* ============ Mechanical Odometer Display ============ */}
-          <div className="flex items-center gap-2 py-4 mb-6 border-y border-charcoal/15 dark:border-stone-line/20">
-            <span className="font-mono text-5xl sm:text-7xl font-black text-charcoal dark:text-stone-light tracking-tighter tnum">
-              {activeMilestone.year}
-            </span>
-            <div className="text-left pl-2">
+          <div className="py-4 mb-6 border-y-2 border-dashed border-ink/20 dark:border-cream/20">
+            <div className="flex items-center gap-4">
+              <Odometer value={activeMilestone.year} className="text-5xl sm:text-6xl" />
+              <div className="flex flex-col gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex((i) => Math.max(0, i - 1))}
+                  disabled={activeIndex === 0}
+                  aria-label="Newer milestone"
+                  className="w-9 h-9 rounded-lg bg-sunny text-ink border-2 border-ink shadow-hard-sm font-mono font-black active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-40 disabled:shadow-none"
+                >
+                  ▲
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex((i) => Math.min(MILESTONES.length - 1, i + 1))}
+                  disabled={activeIndex === MILESTONES.length - 1}
+                  aria-label="Older milestone"
+                  className="w-9 h-9 rounded-lg bg-sunny text-ink border-2 border-ink shadow-hard-sm font-mono font-black active:translate-x-[2px] active:translate-y-[2px] active:shadow-none disabled:opacity-40 disabled:shadow-none"
+                >
+                  ▼
+                </button>
+              </div>
+            </div>
+            <div className="mt-3">
               <span className="block font-mono text-xs font-bold text-teal dark:text-sunny uppercase">
                 {activeMilestone.timeframe}
               </span>
@@ -175,6 +196,7 @@ export function StoryTimeline() {
                   key={m.id}
                   type="button"
                   onClick={() => setActiveIndex(idx)}
+                  aria-pressed={activeIndex === idx}
                   className={`p-3 rounded-xl border-2 font-mono text-left transition-all flex items-center justify-between ${
                     activeIndex === idx
                       ? "bg-charcoal text-stone-light dark:bg-stone-light dark:text-charcoal border-charcoal dark:border-stone-light shadow-hard-sm"

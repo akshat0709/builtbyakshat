@@ -53,10 +53,10 @@ export const PRODUCTS: Record<string, Product> = {
     status: "pre-launch",
     role: "Full-Stack Developer Intern",
     stack: [
-      "React",
+      "Next.js",
       "TypeScript",
-      "TanStack Start",
-      "Supabase",
+      "Supabase Realtime",
+      "Nitro",
       "PostgreSQL",
       "Tailwind CSS",
     ],
@@ -66,8 +66,8 @@ export const PRODUCTS: Record<string, Product> = {
         plainEnglish: "Live driver location, ride requests, and in-ride chat engine",
       },
       {
-        tech: "TanStack Start & React",
-        plainEnglish: "Production Progressive Web App (PWA) client",
+        tech: "Next.js & Nitro",
+        plainEnglish: "The rider/driver web app and the server routes that run dispatch",
       },
       {
         tech: "UPI Payments",

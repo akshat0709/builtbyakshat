@@ -18,7 +18,10 @@ export function HomeInteractiveView() {
       <FlipCalendarHero onOpenContact={() => setIsContactOpen(true)} />
 
       {/* 2. 3D Doors Works Wall ("Magic happens behind the doors") */}
-      <ProjectDoors onSelectProject={(p) => setSelectedProject(p)} />
+      <ProjectDoors
+        onSelectProject={(p) => setSelectedProject(p)}
+        openDoorId={selectedProject?.id ?? null}
+      />
 
       {/* 3. 'My Story' Odometer Timeline */}
       <StoryTimeline />

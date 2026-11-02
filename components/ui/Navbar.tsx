@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { useBengaluruClock } from "@/lib/useBengaluruClock";
 
 interface NavItem {
   cmd: string;
@@ -24,25 +25,9 @@ const NAV_ITEMS: NavItem[] = [
 export function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [bengaluruTime, setBengaluruTime] = useState("");
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Live ticking Bengaluru time
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone: "Asia/Kolkata",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      };
-      setBengaluruTime(now.toLocaleTimeString("en-US", options).toLowerCase());
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  const clock = useBengaluruClock();
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -107,10 +92,16 @@ export function Navbar() {
 
         {/* Right Side: Clock Chip, Theme Toggle & Mobile Menu Hamburger */}
         <div className="flex items-center gap-2.5">
-          {bengaluruTime && (
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm font-mono text-xs font-bold text-ink dark:text-cream">
+          {clock && (
+            <div
+              title="Local time in Bengaluru (IST)"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm font-mono text-xs font-bold text-ink dark:text-cream">
               <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" aria-hidden="true" />
-              <span className="tnum">{bengaluruTime}</span>
+              <span className="tnum">
+                {clock.hh.replace(/^0/, "")}
+                <span className="animate-pulse">:</span>
+                {clock.mm} {clock.period}
+              </span>
               <span className="opacity-40">•</span>
               <span className="text-[11px]">BLR</span>
             </div>

@@ -1,43 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { getTheme, onThemeChange, toggleTheme, type Theme } from "@/lib/theme";
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setThemeState] = useState<Theme>("light");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // The layout's inline script has already applied the stored theme before paint.
+    setThemeState(getTheme());
     setMounted(true);
-    const stored = localStorage.getItem("theme") as "light" | "dark" | null;
-    if (stored) {
-      setTheme(stored);
-      if (stored === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initial = prefersDark ? "dark" : "light";
-      setTheme(initial);
-      if (prefersDark) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    }
+    return onThemeChange(setThemeState);
   }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    localStorage.setItem("theme", nextTheme);
-    if (nextTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
 
   if (!mounted) {
     return (
@@ -50,7 +25,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
 
   return (
     <button
-      onClick={toggleTheme}
+      onClick={() => toggleTheme()}
       type="button"
       role="switch"
       aria-checked={theme === "dark"}

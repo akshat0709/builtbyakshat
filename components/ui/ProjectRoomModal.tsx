@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DoorProject } from "./ProjectDoors";
@@ -27,7 +28,11 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
 
   if (!project) return null;
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  // Portal to <body>: PageTransition applies a transform, which would otherwise
+  // turn this fixed overlay into one positioned relative to the page wrapper.
+  return createPortal(
     <AnimatePresence>
       <div
         className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto"
@@ -41,7 +46,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+          className="fixed inset-0 bg-ink/80"
         />
 
         {/* Modal Window */}
@@ -50,7 +55,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 24 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full max-w-2xl bg-paper dark:bg-charcoal border-2 border-charcoal dark:border-stone-line rounded-2xl shadow-hard-xl dark:shadow-[8px_8px_0px_#FFF6E5] overflow-hidden z-10 my-auto"
+          className="relative w-full max-w-2xl bg-paper dark:bg-charcoal border-2 border-charcoal dark:border-stone-line rounded-2xl shadow-[8px_8px_0px_#1A1A1A] dark:shadow-[8px_8px_0px_#FFF6E5] overflow-hidden z-10 my-auto"
         >
           {/* Header Bar styled with the Door's signature color */}
           <div
@@ -69,6 +74,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
             <button
               type="button"
               onClick={onClose}
+              autoFocus
               className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 border border-white/30 text-white font-mono text-sm font-bold flex items-center justify-center transition-colors"
               aria-label="Close project room"
             >
@@ -119,7 +125,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 {project.metrics.map((m, i) => (
                   <div
-                    key={i}
+                    key={m}
                     className="p-3 rounded-lg bg-paper dark:bg-charcoal-light border border-charcoal/30 dark:border-stone-line/30 shadow-hard-sm"
                   >
                     <span className="font-mono text-[10px] font-bold text-teal block">
@@ -142,7 +148,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
                 {project.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 rounded-full bg-paper dark:bg-charcoal-light border border-charcoal/40 dark:border-stone-line/40 font-mono text-xs font-bold text-charcoal dark:text-stone-light shadow-sm"
+                    className="px-3 py-1 rounded-full bg-paper dark:bg-charcoal-light border-2 border-ink dark:border-stone-line font-mono text-xs font-bold text-charcoal dark:text-stone-light"
                   >
                     {tech}
                   </span>
@@ -159,7 +165,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-teal text-white border-2 border-charcoal font-mono text-xs font-bold shadow-hard-sm hover:shadow-hard transition-all hover:-translate-y-0.5"
                 >
-                  <span>Launch Live Platform</span>
+                  <span>Visit Live Site</span>
                   <span aria-hidden="true">↗</span>
                 </a>
               )}
@@ -170,7 +176,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-paper dark:bg-charcoal-light text-charcoal dark:text-stone-light border-2 border-charcoal dark:border-stone-line font-mono text-xs font-bold shadow-hard-sm hover:shadow-hard transition-all hover:-translate-y-0.5"
                 >
-                  <span>Inspect GitHub Repository</span>
+                  <span>View on GitHub</span>
                   <span aria-hidden="true">↗</span>
                 </a>
               )}
@@ -185,6 +191,7 @@ export function ProjectRoomModal({ project, onClose }: ProjectRoomModalProps) {
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

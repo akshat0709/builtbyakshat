@@ -54,7 +54,7 @@ export const USES_DATA: UseItem[] = [
     name: "Supabase (PostgreSQL, Realtime, RLS)",
     category: "stack",
     description:
-      "Relational schemas, sub-100ms WebSocket broadcast channels for live dispatch, and Row Level Security enforcement.",
+      "Relational schemas, Realtime broadcast channels for live dispatch, and Row Level Security enforcement.",
     url: "https://supabase.com",
   },
   {
