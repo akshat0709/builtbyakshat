@@ -9,8 +9,11 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
 
+  // The home page uses the full width; reading pages keep a comfortable measure.
+  const width = pathname === "/" ? "w-full" : "w-full max-w-4xl mx-auto";
+
   if (shouldReduceMotion) {
-    return <>{children}</>;
+    return <div className={width}>{children}</div>;
   }
 
   return (
@@ -22,7 +25,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         duration: durations.fast,
         ease: easeOutCurve,
       }}
-      className="w-full"
+      className={width}
     >
       {children}
     </motion.div>

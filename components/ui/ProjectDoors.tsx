@@ -143,11 +143,11 @@ function Door({
         onFocus={() => setHover(true)}
         onBlur={() => setHover(false)}
         aria-label={`Door ${door.doorNumber}: ${door.projectName}. Open the room.`}
-        className="group relative w-full max-w-[190px] focus-visible:outline-none"
+        className="group relative w-full max-w-[210px] focus-visible:outline-none"
       >
         {/* Architrave / casing */}
         <span
-          className="relative block h-[300px] sm:h-[330px] p-[10px] pb-0 rounded-t-[18px] bg-[#D8CCBF] dark:bg-[#2E2929] border-2 border-ink dark:border-cream/80 shadow-hard-lg dark:shadow-hard-dark group-focus-visible:ring-4 group-focus-visible:ring-sunny"
+          className="relative block h-[300px] sm:h-[330px] xl:h-[360px] p-[10px] pb-0 rounded-t-[18px] bg-[#D8CCBF] dark:bg-[#2E2929] border-2 border-ink dark:border-cream/80 shadow-hard-lg dark:shadow-hard-dark group-focus-visible:ring-4 group-focus-visible:ring-sunny"
           style={{ perspective: 900 }}
         >
           {/* Casing moulding line */}
@@ -273,10 +273,10 @@ function Door({
       </button>
 
       <span className="text-center mt-2 px-1">
-        <span className="font-display font-black text-xs sm:text-sm text-ink dark:text-cream block leading-tight">
+        <span className="font-display font-black text-xs sm:text-sm text-cream block leading-tight">
           {door.projectName}
         </span>
-        <span className="font-mono text-[11px] text-ink/60 dark:text-cream/60">{door.category}</span>
+        <span className="font-mono text-[11px] text-cream/55">{door.category}</span>
       </span>
     </div>
   );
@@ -317,28 +317,37 @@ export function ProjectDoors({ onSelectProject, openDoorId = null }: ProjectDoor
   };
 
   return (
-    <section id="works" className="relative py-20 px-1 sm:px-2 scroll-mt-6">
-      <div className="mb-12">
+    <section
+      id="works"
+      className="relative scroll-mt-6 overflow-hidden rounded-[28px] border-2 border-ink dark:border-cream/30 bg-forest dark:bg-forest-deep shadow-hard-lg dark:shadow-none px-5 sm:px-10 lg:px-14 pt-14 sm:pt-20 pb-0"
+      style={{
+        backgroundImage:
+          "repeating-linear-gradient(90deg, rgba(255,246,229,0.035) 0 28px, transparent 28px 56px)",
+      }}
+    >
+      <div className="mb-12 lg:flex lg:items-end lg:justify-between lg:gap-10">
+        <div>
         <div className="flex items-center gap-2 mb-2">
           <span className="px-3 py-1 rounded-full bg-sunny text-ink font-mono text-xs font-bold border-2 border-ink shadow-hard-sm">
             02 / Works Wall
           </span>
-          <span className="font-mono text-xs uppercase tracking-wider text-ink/60 dark:text-cream/60">
+          <span className="font-mono text-xs uppercase tracking-wider text-cream/60">
             One door per discipline
           </span>
         </div>
-        <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-ink dark:text-cream tracking-tight">
+        <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl xl:text-7xl text-cream tracking-tight leading-[1.02]">
           Magic happens <br className="hidden sm:inline" />
-          behind the doors.
+          behind the <span className="text-sunny">doors.</span>
         </h2>
-        <p className="font-body text-sm sm:text-base text-ink/75 dark:text-cream/75 max-w-xl mt-3 leading-relaxed">
+        </div>
+        <p className="font-body text-sm sm:text-base text-cream/70 max-w-sm mt-4 lg:mt-0 leading-relaxed">
           Hover a door to crack it open. Click to step inside the room.
         </p>
       </div>
 
       {/* Wall with a skirting board running under the doors */}
       <div className="relative">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-10 items-start">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 xl:gap-x-8 gap-y-10 items-start justify-items-center">
           {DOORS_DATA.map((door) => (
             <Door
               key={door.id}
@@ -351,6 +360,18 @@ export function ProjectDoors({ onSelectProject, openDoorId = null }: ProjectDoor
             />
           ))}
         </div>
+      </div>
+
+      {/* Skirting board + floor */}
+      <div className="relative mt-12 -mx-5 sm:-mx-10 lg:-mx-14">
+        <div className="h-3 bg-[#D8CCBF] dark:bg-[#2E2929] border-y-2 border-ink" />
+        <div
+          className="h-14 sm:h-20 bg-[#6B4A33] dark:bg-[#3A281C]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(90deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 120px), repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 9px)",
+          }}
+        />
       </div>
     </section>
   );

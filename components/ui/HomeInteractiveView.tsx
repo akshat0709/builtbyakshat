@@ -13,7 +13,7 @@ export function HomeInteractiveView() {
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 sm:space-y-14">
       {/* 1. 3D Desk Flip-Calendar Hero */}
       <FlipCalendarHero onOpenContact={() => setIsContactOpen(true)} />
 

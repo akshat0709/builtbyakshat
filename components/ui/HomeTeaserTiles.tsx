@@ -8,7 +8,7 @@ import { WrenchDoodle } from "@/components/doodles/WrenchDoodle";
 
 export function HomeTeaserTiles() {
   return (
-    <section aria-labelledby="teasers-heading" className="py-10">
+    <section aria-labelledby="teasers-heading" className="pt-6 pb-4">
       <div className="flex items-center justify-between mb-6">
         <div>
           <span className="text-xs font-mono uppercase tracking-wider text-teal font-bold block mb-1">
@@ -16,7 +16,7 @@ export function HomeTeaserTiles() {
           </span>
           <h2
             id="teasers-heading"
-            className="text-2xl sm:text-3xl font-display font-black text-ink dark:text-cream tracking-tight"
+            className="text-3xl sm:text-5xl font-display font-black text-ink dark:text-cream tracking-tight"
           >
             Where do you want to start?
           </h2>
@@ -26,11 +26,11 @@ export function HomeTeaserTiles() {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-8">
         {/* Tile 1: Experience */}
         <Link
           href="/experience"
-          className="group relative flex flex-col justify-between p-6 rounded-2xl bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard hover:shadow-hard-lg dark:shadow-hard-dark hover:-translate-y-1 transition-all duration-200"
+          className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-[22px] bg-sky dark:bg-ink-card border-ink border-2 shadow-hard-lg hover:shadow-[7px_7px_0_#1A1A1A] dark:shadow-hard-dark hover:-translate-y-1 transition-all duration-200"
         >
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -46,7 +46,7 @@ export function HomeTeaserTiles() {
               Experience
             </h3>
             <p className="text-xs sm:text-sm font-body text-ink/75 dark:text-cream/70 mt-2 leading-relaxed">
-              Full-Stack Intern at Orange Taxi: real-time dispatch, dynamic UPI QR payments, and production telemetry.
+              Full-Stack Intern at Orange Taxi: real-time dispatch, UPI QR cash handovers, and live driver tracking.
             </p>
           </div>
 
@@ -61,7 +61,7 @@ export function HomeTeaserTiles() {
         {/* Tile 2: Built */}
         <Link
           href="/built"
-          className="group relative flex flex-col justify-between p-6 rounded-2xl bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard hover:shadow-hard-lg dark:shadow-hard-dark hover:-translate-y-1 transition-all duration-200"
+          className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-[22px] bg-mint dark:bg-ink-card border-ink border-2 shadow-hard-lg hover:shadow-[7px_7px_0_#1A1A1A] dark:shadow-hard-dark hover:-translate-y-1 transition-all duration-200"
         >
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -92,7 +92,7 @@ export function HomeTeaserTiles() {
         {/* Tile 3: Lab */}
         <Link
           href="/lab"
-          className="group relative flex flex-col justify-between p-6 rounded-2xl bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard hover:shadow-hard-lg dark:shadow-hard-dark hover:-translate-y-1 transition-all duration-200"
+          className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-[22px] bg-coral dark:bg-ink-card border-ink border-2 shadow-hard-lg hover:shadow-[7px_7px_0_#1A1A1A] dark:shadow-hard-dark hover:-translate-y-1 transition-all duration-200"
         >
           <div>
             <div className="flex items-center justify-between mb-4">

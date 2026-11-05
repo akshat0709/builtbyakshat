@@ -139,3 +139,12 @@
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.35);
 }
+
+/* Faint dot grid on the page canvas: workshop cutting-mat feel, no blur. */
+.canvas-dots {
+  background-image: radial-gradient(rgba(26, 26, 26, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dark .canvas-dots {
+  background-image: radial-gradient(rgba(255, 246, 229, 0.05) 1px, transparent 1px);
+}

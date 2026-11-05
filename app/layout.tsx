@@ -147,13 +147,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className="bg-cream text-ink dark:bg-ink-deep dark:text-cream min-h-screen selection:bg-sunny selection:text-ink antialiased">
+      <body className="canvas-dots bg-cream text-ink dark:bg-ink-deep dark:text-cream min-h-screen selection:bg-sunny selection:text-ink antialiased">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
         <CursorBlob />
         <PullCord />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-h-screen">
+        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-24 flex flex-col min-h-screen">
           <Navbar />
           <div className="flex-1">
             <PageTransition>{children}</PageTransition>

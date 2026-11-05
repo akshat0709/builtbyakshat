@@ -122,22 +122,29 @@ export function StoryTimeline() {
   const activeMilestone = MILESTONES[activeIndex] || MILESTONES[0];
 
   return (
-    <section id="about" className="relative py-20 px-4 sm:px-6 md:px-10 max-w-6xl mx-auto overflow-hidden">
+    <section
+      id="about"
+      className="relative overflow-hidden rounded-[28px] border-2 border-ink dark:border-cream/30 bg-cobalt dark:bg-cobalt-deep shadow-hard-lg dark:shadow-none px-5 sm:px-10 lg:px-14 py-14 sm:py-20 scroll-mt-6"
+      style={{
+        backgroundImage: "radial-gradient(rgba(255,246,229,0.09) 1.2px, transparent 1.2px)",
+        backgroundSize: "22px 22px",
+      }}
+    >
       {/* Section Header */}
       <div className="mb-12">
         <div className="flex items-center gap-2 mb-2">
-          <span className="px-3 py-1 rounded-full bg-stone-mid dark:bg-charcoal-light text-charcoal dark:text-stone-light font-mono text-xs font-bold border border-charcoal/20">
+          <span className="px-3 py-1 rounded-full bg-sunny text-ink font-mono text-xs font-bold border-2 border-ink shadow-hard-sm">
             03 / My Story
           </span>
-          <span className="font-mono text-xs uppercase tracking-wider text-charcoal/60 dark:text-stone-light/60">
+          <span className="font-mono text-xs uppercase tracking-wider text-cream/60">
             Engineering Journey
           </span>
         </div>
 
-        <h2 className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-charcoal dark:text-stone-light tracking-tight">
+        <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl xl:text-7xl text-cream tracking-tight">
           Let&apos;s roll back the years.
         </h2>
-        <p className="font-body text-sm sm:text-base text-charcoal/75 dark:text-stone-light/75 max-w-xl mt-3 leading-relaxed">
+        <p className="font-body text-sm sm:text-base text-cream/75 max-w-xl mt-3 leading-relaxed">
           From a smart wheelchair in 2022 to realtime cab dispatch today. Pick a milestone and watch the counter roll.
         </p>
       </div>
@@ -145,7 +152,7 @@ export function StoryTimeline() {
       {/* Main Odometer Stage & Timeline Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Rolling Odometer & Year Navigation */}
-        <div className="lg:col-span-5 bg-stone-light dark:bg-charcoal-light p-6 sm:p-8 rounded-2xl border-2 border-charcoal dark:border-stone-line shadow-hard">
+        <div className="lg:col-span-5 bg-cream-light dark:bg-charcoal-light p-6 sm:p-8 rounded-2xl border-2 border-charcoal dark:border-stone-line shadow-hard">
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-charcoal/60 dark:text-stone-light/60 block mb-2">
             Selected Era
           </span>

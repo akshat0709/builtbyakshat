@@ -389,7 +389,7 @@ export function PullCord() {
   return (
     <div
       ref={containerRef}
-      className="fixed top-0 right-2 sm:right-8 md:right-12 z-40 w-[120px] pointer-events-none select-none print:hidden"
+      className="fixed top-0 right-0 sm:right-1 z-40 w-[120px] pointer-events-none select-none print:hidden"
       style={{ height: 320 }}
     >
       <canvas

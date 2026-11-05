@@ -12,6 +12,14 @@ const SKILLS = [
   "IoT & Embedded Security",
 ];
 
+const STICKERS = [
+  { label: "Now", text: "Full-Stack Intern @ Orange Taxi", bg: "bg-coral", rot: -2.5, x: "0%", y: "0%" },
+  { label: "Study", text: "BMSCE · CS (IoT & Cyber) · '28", bg: "bg-mint", rot: 2, x: "24%", y: "31%" },
+  { label: "CGPA", text: "8.97", bg: "bg-sky", rot: -1.5, x: "74%", y: "2%", big: true },
+  { label: "2022", text: "National INSPIRE Award", bg: "bg-sunny", rot: 2.5, x: "0%", y: "62%" },
+  { label: "Base", text: "Bengaluru, India", bg: "bg-lilac", rot: -2, x: "56%", y: "80%" },
+];
+
 const FLIP_MS = 720;
 const DWELL_MS = 2600;
 
@@ -23,7 +31,7 @@ interface FlipCalendarHeroProps {
 function PageFace({ title, index }: { title: string; index: number }) {
   return (
     <div className="absolute inset-0 flex items-center justify-between gap-3 px-4 sm:px-6 pt-3">
-      <span className="font-display font-black text-[1.35rem] leading-none sm:text-3xl md:text-4xl text-charcoal dark:text-stone-light whitespace-nowrap">
+      <span className="font-display font-black text-[1.35rem] leading-none sm:text-3xl md:text-4xl xl:text-5xl text-charcoal dark:text-stone-light whitespace-nowrap">
         {title}
       </span>
       <span className="shrink-0 font-mono text-[10px] sm:text-xs font-bold text-tomato dark:text-sunny tnum">
@@ -74,7 +82,7 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
   };
 
   return (
-    <section id="home" className="relative pt-12 sm:pt-16 pb-16 px-1 sm:px-2">
+    <section id="home" className="relative pt-10 sm:pt-14 pb-16 px-1 sm:px-2">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -92,9 +100,17 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display font-black text-4xl sm:text-6xl md:text-7xl tracking-tight text-ink dark:text-cream leading-[1.02]"
+          className="font-display font-black text-[2.6rem] sm:text-6xl md:text-7xl xl:text-[6.5rem] tracking-tight text-ink dark:text-cream leading-[1.02]"
         >
-          Hi, I&apos;m Akshat Gupta.
+          Hi, I&apos;m{" "}
+          <span className="relative inline-block whitespace-nowrap">
+            <span
+              aria-hidden="true"
+              className="absolute -inset-x-2 bottom-[0.06em] h-[0.42em] -rotate-1 bg-sunny dark:bg-tomato border-2 border-ink dark:border-cream/70 rounded-md"
+            />
+            <span className="relative">Akshat Gupta</span>
+          </span>
+          <span className="text-tomato dark:text-sunny">.</span>
           <span className="sr-only"> I engineer {SKILLS.join(", ")}.</span>
         </motion.h1>
 
@@ -102,10 +118,10 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-4 flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-5"
+          className="mt-5 flex flex-col md:flex-row md:items-end gap-4 md:gap-6"
           aria-hidden="true"
         >
-          <span className="font-display font-black text-3xl sm:text-5xl md:text-6xl text-ink/80 dark:text-cream/80 leading-none sm:pb-3">
+          <span className="font-display font-black text-3xl sm:text-5xl md:text-6xl xl:text-7xl text-cobalt dark:text-sky leading-none md:pb-3 shrink-0">
             I engineer
           </span>
 
@@ -116,7 +132,7 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
             onClick={flip}
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
-            className="group relative block w-full max-w-[340px] sm:max-w-none sm:w-[440px] md:w-[500px] text-left cursor-pointer select-none"
+            className="group relative block w-full max-w-[360px] sm:max-w-[480px] md:max-w-none md:w-[480px] xl:w-[600px] text-left cursor-pointer select-none"
             style={{ perspective: 1100 }}
           >
             {/* Easel back leg peeking out under the pad */}
@@ -130,7 +146,7 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
             <span className="absolute inset-x-0.5 top-[18px] -bottom-[3px] rounded-b-lg bg-paper dark:bg-[#2E2A2A] border-2 border-ink dark:border-cream/70" />
 
             {/* Pad */}
-            <span className="relative block h-[84px] sm:h-[104px] md:h-[116px] rounded-lg border-2 border-ink dark:border-cream/70 bg-paper dark:bg-ink-card shadow-hard-lg dark:shadow-hard-dark">
+            <span className="relative block h-[84px] sm:h-[104px] md:h-[116px] xl:h-[132px] rounded-lg border-2 border-ink dark:border-cream/70 bg-paper dark:bg-ink-card shadow-hard-lg dark:shadow-hard-dark">
               {/* Header strip the rings bite into */}
               <span className="absolute inset-x-0 top-0 h-[14px] rounded-t-md bg-tomato border-b-2 border-ink dark:border-cream/70" />
 
@@ -195,43 +211,78 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
         </motion.div>
       </div>
 
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        className="font-body text-base sm:text-lg text-ink/80 dark:text-cream/80 max-w-2xl leading-relaxed mb-8"
-      >
-        Full-stack developer and CS undergrad (IoT, Cybersecurity &amp; Blockchain) at BMSCE,
-        Bengaluru. Currently building realtime dispatch at Orange Taxi; before that, a GPS-denied
-        search-and-rescue rover and locomotive-cab computer vision.
-      </motion.p>
-
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-wrap items-center gap-4 mb-14"
-      >
-        <button
-          type="button"
-          onClick={onOpenContact}
-          className="group inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-ink text-cream dark:bg-cream dark:text-ink font-display font-bold text-sm sm:text-base border-2 border-ink dark:border-cream shadow-hard dark:shadow-hard-dark hover:-translate-y-0.5 hover:shadow-hard-lg active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
+      <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)] gap-10 lg:gap-12 items-center mb-14">
+        <div>
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="font-body text-base sm:text-lg xl:text-xl text-ink/80 dark:text-cream/80 max-w-2xl leading-relaxed mb-8"
         >
-          <span>Say hello</span>
-          <span className="w-6 h-6 rounded-full bg-sunny text-ink inline-flex items-center justify-center font-bold text-xs border border-ink group-hover:translate-x-0.5 transition-transform">
-            →
-          </span>
-        </button>
+          Full-stack developer and CS undergrad (IoT, Cybersecurity &amp; Blockchain) at BMSCE,
+          Bengaluru. Currently building realtime dispatch at Orange Taxi; before that, a GPS-denied
+          search-and-rescue rover and locomotive-cab computer vision.
+        </motion.p>
 
-        <button
-          type="button"
-          onClick={scrollToWorks}
-          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-cream-light dark:bg-ink-card text-ink dark:text-cream font-display font-bold text-sm sm:text-base border-2 border-ink dark:border-cream shadow-hard-sm dark:shadow-hard-dark-sm hover:bg-sunny/40 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-wrap items-center gap-4"
         >
-          <span>Explore the doors</span>
-          <span aria-hidden="true">↓</span>
-        </button>
-      </motion.div>
+          <button
+            type="button"
+            onClick={onOpenContact}
+            className="group inline-flex items-center gap-3 px-6 py-3.5 rounded-full bg-ink text-cream dark:bg-cream dark:text-ink font-display font-bold text-sm sm:text-base border-2 border-ink dark:border-cream shadow-hard dark:shadow-hard-dark hover:-translate-y-0.5 hover:shadow-hard-lg active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all"
+          >
+            <span>Say hello</span>
+            <span className="w-6 h-6 rounded-full bg-sunny text-ink inline-flex items-center justify-center font-bold text-xs border border-ink group-hover:translate-x-0.5 transition-transform">
+              →
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={scrollToWorks}
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-cream-light dark:bg-ink-card text-ink dark:text-cream font-display font-bold text-sm sm:text-base border-2 border-ink dark:border-cream shadow-hard-sm dark:shadow-hard-dark-sm hover:bg-sunny/40 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all"
+          >
+            <span>Explore the doors</span>
+            <span aria-hidden="true">↓</span>
+          </button>
+        </motion.div>
+        </div>
+
+        {/* Sticker board: real facts, slapped on like a laptop lid */}
+        <motion.ul
+          aria-label="Quick facts"
+          initial="hidden"
+          animate="shown"
+          variants={{ shown: { transition: { staggerChildren: 0.08, delayChildren: 0.45 } } }}
+          className="relative grid grid-cols-2 gap-3 lg:block lg:h-[290px]"
+        >
+          {STICKERS.map((st) => (
+            <motion.li
+              key={st.text}
+              variants={{
+                hidden: { opacity: 0, scale: 0.6, rotate: 0 },
+                shown: { opacity: 1, scale: 1, rotate: st.rot },
+              }}
+              transition={{ type: "spring", stiffness: 260, damping: 16 }}
+              whileHover={reduce ? undefined : { rotate: 0, scale: 1.06, zIndex: 10 }}
+              drag={!reduce}
+              dragSnapToOrigin
+              dragElastic={0.4}
+              className={`${st.bg} lg:absolute w-auto lg:whitespace-nowrap px-4 py-3 rounded-xl border-2 border-ink text-ink shadow-hard-lg cursor-grab active:cursor-grabbing select-none`}
+              style={{ left: st.x, top: st.y } as React.CSSProperties}
+            >
+              <span className="block font-mono text-[10px] font-black uppercase tracking-widest opacity-70">{st.label}</span>
+              <span className={`block font-display font-black leading-tight ${st.big ? "text-3xl" : "text-sm sm:text-base"}`}>
+                {st.text}
+              </span>
+            </motion.li>
+          ))}
+        </motion.ul>
+      </div>
 
       <motion.div
         initial={{ opacity: 0 }}
