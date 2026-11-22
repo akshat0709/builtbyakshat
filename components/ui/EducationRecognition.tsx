@@ -57,9 +57,11 @@ export function EducationRecognition() {
             <span className="px-3 py-1 rounded-full bg-paper dark:bg-ink-deep border border-ink text-ink/80 dark:text-cream/80 font-bold">
               {education.period}
             </span>
-            <span className="px-3 py-1 rounded-full bg-sunny text-ink border-ink border-2 font-black shadow-hard-sm">
-              {education.grade}
-            </span>
+            {education.grade && (
+              <span className="px-3 py-1 rounded-full bg-sunny text-ink border-ink border-2 font-black shadow-hard-sm">
+                {education.grade}
+              </span>
+            )}
           </div>
         </div>
 

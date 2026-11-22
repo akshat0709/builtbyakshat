@@ -16,7 +16,7 @@ export function HomeTeaserTiles() {
           </span>
           <h2
             id="teasers-heading"
-            className="text-3xl sm:text-5xl font-display font-black text-ink dark:text-cream tracking-tight"
+            className="font-poster uppercase text-4xl sm:text-6xl text-cream leading-[0.95]"
           >
             Where do you want to start?
           </h2>

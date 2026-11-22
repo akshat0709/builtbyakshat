@@ -319,7 +319,7 @@ export function ProjectDoors({ onSelectProject, openDoorId = null }: ProjectDoor
   return (
     <section
       id="works"
-      className="relative scroll-mt-6 overflow-hidden rounded-[28px] border-2 border-ink dark:border-cream/30 bg-forest dark:bg-forest-deep shadow-hard-lg dark:shadow-none px-5 sm:px-10 lg:px-14 pt-14 sm:pt-20 pb-0"
+      className="relative scroll-mt-6 overflow-hidden rounded-[28px] border border-white/[0.07] bg-forest-deep bg-[radial-gradient(90%_60%_at_50%_0%,rgba(255,110,40,0.16)_0%,transparent_65%)] shadow-none px-5 sm:px-10 lg:px-14 pt-14 sm:pt-20 pb-0"
       style={{
         backgroundImage:
           "repeating-linear-gradient(90deg, rgba(255,246,229,0.035) 0 28px, transparent 28px 56px)",
@@ -335,7 +335,7 @@ export function ProjectDoors({ onSelectProject, openDoorId = null }: ProjectDoor
             One door per discipline
           </span>
         </div>
-        <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl xl:text-7xl text-cream tracking-tight leading-[1.02]">
+        <h2 className="font-poster uppercase text-5xl sm:text-6xl md:text-7xl xl:text-[7.5rem] text-cream leading-[0.9]">
           Magic happens <br className="hidden sm:inline" />
           behind the <span className="text-sunny">doors.</span>
         </h2>

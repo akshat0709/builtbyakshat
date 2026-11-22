@@ -41,7 +41,7 @@ export interface EducationItem {
   institution: string;
   degree: string;
   period: string;
-  grade: string;
+  grade?: string;
 }
 
 export interface RecognitionItem {
@@ -212,7 +212,6 @@ export const builderProfile: BuilderProfile = {
     institution: "BMS College of Engineering",
     degree: "B.E. CS (IoT, Cybersecurity & Blockchain)",
     period: "2024 - 2028",
-    grade: "CGPA 8.97 (till 4th sem)",
   },
   recognition: [
     {

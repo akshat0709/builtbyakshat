@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FlipCalendarHero } from "@/components/ui/FlipCalendarHero";
+import { VesperionHero } from "@/components/ui/VesperionHero";
 import { ProjectDoors, DoorProject } from "@/components/ui/ProjectDoors";
 import { ProjectRoomModal } from "@/components/ui/ProjectRoomModal";
 import { StoryTimeline } from "@/components/ui/StoryTimeline";
@@ -14,8 +14,8 @@ export function HomeInteractiveView() {
 
   return (
     <div className="space-y-10 sm:space-y-14">
-      {/* 1. 3D Desk Flip-Calendar Hero */}
-      <FlipCalendarHero onOpenContact={() => setIsContactOpen(true)} />
+      {/* 1. Cinematic poster hero */}
+      <VesperionHero onOpenContact={() => setIsContactOpen(true)} />
 
       {/* 2. 3D Doors Works Wall ("Magic happens behind the doors") */}
       <ProjectDoors

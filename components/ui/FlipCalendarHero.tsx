@@ -15,7 +15,6 @@ const SKILLS = [
 const STICKERS = [
   { label: "Now", text: "Full-Stack Intern @ Orange Taxi", bg: "bg-coral", rot: -2.5, x: "0%", y: "0%" },
   { label: "Study", text: "BMSCE · CS (IoT & Cyber) · '28", bg: "bg-mint", rot: 2, x: "24%", y: "31%" },
-  { label: "CGPA", text: "8.97", bg: "bg-sky", rot: -1.5, x: "74%", y: "2%", big: true },
   { label: "2022", text: "National INSPIRE Award", bg: "bg-sunny", rot: 2.5, x: "0%", y: "62%" },
   { label: "Base", text: "Bengaluru, India", bg: "bg-lilac", rot: -2, x: "56%", y: "80%" },
 ];
@@ -276,7 +275,7 @@ export function FlipCalendarHero({ onOpenContact }: FlipCalendarHeroProps) {
               style={{ left: st.x, top: st.y } as React.CSSProperties}
             >
               <span className="block font-mono text-[10px] font-black uppercase tracking-widest opacity-70">{st.label}</span>
-              <span className={`block font-display font-black leading-tight ${st.big ? "text-3xl" : "text-sm sm:text-base"}`}>
+              <span className={`block font-display font-black leading-tight text-sm sm:text-base`}>
                 {st.text}
               </span>
             </motion.li>

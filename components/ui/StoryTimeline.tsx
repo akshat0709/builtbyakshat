@@ -86,9 +86,8 @@ const MILESTONES: Milestone[] = [
     role: "B.E. Student (IoT, Cybersecurity & Blockchain)",
     location: "Bengaluru, India",
     summary:
-      "Bachelor of Engineering in Computer Science (IoT, Cybersecurity & Blockchain), CGPA 8.97. Deep-diving into operating systems, distributed architectures, network cryptography, microcontroller assembly, and decentralized protocols while building production systems.",
+      "Bachelor of Engineering in Computer Science (IoT, Cybersecurity & Blockchain). Deep-diving into operating systems, distributed architectures, network cryptography, microcontroller assembly, and decentralized protocols while building production systems.",
     highlights: [
-      "Academic Standing: CGPA 8.97 / 10",
       "Core focus: IoT, Cybersecurity & Blockchain (Class of '28)",
       "Autonomous systems and embedded robotics laboratory work",
     ],
@@ -124,7 +123,7 @@ export function StoryTimeline() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden rounded-[28px] border-2 border-ink dark:border-cream/30 bg-cobalt dark:bg-cobalt-deep shadow-hard-lg dark:shadow-none px-5 sm:px-10 lg:px-14 py-14 sm:py-20 scroll-mt-6"
+      className="relative overflow-hidden rounded-[28px] border border-white/[0.07] bg-cobalt-deep bg-[radial-gradient(90%_60%_at_50%_0%,rgba(255,110,40,0.16)_0%,transparent_65%)] shadow-none px-5 sm:px-10 lg:px-14 py-14 sm:py-20 scroll-mt-6"
       style={{
         backgroundImage: "radial-gradient(rgba(255,246,229,0.09) 1.2px, transparent 1.2px)",
         backgroundSize: "22px 22px",
@@ -141,7 +140,7 @@ export function StoryTimeline() {
           </span>
         </div>
 
-        <h2 className="font-display font-black text-4xl sm:text-5xl md:text-6xl xl:text-7xl text-cream tracking-tight">
+        <h2 className="font-poster uppercase text-5xl sm:text-6xl md:text-7xl xl:text-[7.5rem] text-cream leading-[0.9]">
           Let&apos;s roll back the years.
         </h2>
         <p className="font-body text-sm sm:text-base text-cream/75 max-w-xl mt-3 leading-relaxed">

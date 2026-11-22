@@ -4,15 +4,9 @@
 
 @layer base {
   :root {
-    --bg-color: #FFF6E5;
-    --text-color: #1A1A1A;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg-color: #121212;
-      --text-color: #FFF6E5;
-    }
+    --bg-color: #0A0807;
+    --text-color: #F1E9DE;
+    color-scheme: dark;
   }
 
   html {
@@ -45,14 +39,8 @@
 
   /* Accessible focus indicators */
   :focus-visible {
-    outline: 2px solid #1A1A1A;
+    outline: 2px solid #FF8A3D;
     outline-offset: 2px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :focus-visible {
-      outline: 2px solid #FFF6E5;
-    }
   }
 }
 
@@ -146,5 +134,57 @@
   background-size: 24px 24px;
 }
 .dark .canvas-dots {
-  background-image: radial-gradient(rgba(255, 246, 229, 0.05) 1px, transparent 1px);
+  background-image: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* Vesperion: cinematic dark canvas, ember glow, film grain            */
+/* ------------------------------------------------------------------ */
+.vesper-canvas {
+  background-color: #0A0807;
+  background-image:
+    radial-gradient(70% 40% at 50% -5%, rgba(255, 110, 40, 0.14) 0%, transparent 70%),
+    radial-gradient(50% 35% at 100% 60%, rgba(255, 110, 40, 0.05) 0%, transparent 70%);
+  background-attachment: fixed;
+}
+.vesper-canvas::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.vesper-grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.vesper-ember {
+  position: absolute;
+  bottom: -10px;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #ffb27a;
+  box-shadow: 0 0 8px 2px rgba(255, 140, 60, 0.8);
+  opacity: 0;
+  animation-name: vesper-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes vesper-rise {
+  0% { transform: translate(0, 0); opacity: 0; }
+  10% { opacity: 0.9; }
+  70% { opacity: 0.5; }
+  100% { transform: translate(var(--drift, 0px), -620px); opacity: 0; }
+}
+.vesper-marquee {
+  animation: marquee 40s linear infinite;
+}
+.vesper-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
 }

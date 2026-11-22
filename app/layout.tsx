@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Anton, Space_Grotesk, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { builderProfile } from "@/data/profile";
 import { SITE_URL } from "@/lib/site";
@@ -7,8 +7,14 @@ import { Analytics } from "@vercel/analytics/react";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
 import { CursorBlob } from "@/components/ui/CursorBlob";
-import { PullCord } from "@/components/ui/PullCord";
 import { PageTransition } from "@/components/ui/PageTransition";
+
+const anton = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-poster",
+  display: "swap",
+});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -122,37 +128,19 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${anton.variable} ${spaceGrotesk.variable} ${plusJakarta.variable} ${jetbrainsMono.variable}`}
     >
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var stored = localStorage.getItem('theme');
-                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (stored === 'dark' || (!stored && prefersDark)) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className="canvas-dots bg-cream text-ink dark:bg-ink-deep dark:text-cream min-h-screen selection:bg-sunny selection:text-ink antialiased">
+      <body className="vesper-canvas text-cream min-h-screen selection:bg-sunny selection:text-ink antialiased">
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
         <CursorBlob />
-        <PullCord />
         <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-24 flex flex-col min-h-screen">
           <Navbar />
           <div className="flex-1">

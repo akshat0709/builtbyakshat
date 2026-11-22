@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useBengaluruClock } from "@/lib/useBengaluruClock";
 
 interface NavItem {
@@ -56,73 +55,66 @@ export function Navbar() {
   return (
     <nav
       aria-label="Main navigation"
-      className="pt-6 pb-4 mb-4 border-b-ink border-b-2 border-dashed print:hidden"
+      className="sticky top-0 z-40 -mx-4 sm:-mx-8 lg:-mx-24 px-4 sm:px-8 lg:px-24 pt-5 pb-4 mb-6 bg-gradient-to-b from-ink-deep via-ink-deep/85 to-transparent print:hidden"
     >
-      <div className="flex items-center justify-between gap-4">
-        {/* Brand / Logo Terminal Identity */}
+      <div className="flex items-center justify-between gap-4 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm dark:shadow-hard-dark-sm font-mono text-xs font-black text-ink dark:text-cream hover:bg-sunny active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+          className="inline-flex items-center gap-2 text-cream hover:text-sunny transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunny rounded"
         >
-          <span className="w-2 h-2 rounded-full bg-tomato animate-pulse" aria-hidden="true" />
-          <span>akshat.dev</span>
+          <span className="h-1.5 w-1.5 rounded-full bg-sunny shadow-[0_0_10px_2px_rgba(255,138,61,0.75)]" aria-hidden="true" />
+          <span className="font-bold">Akshat Gupta</span>
         </Link>
 
-        {/* Desktop Command Navigation Pills */}
-        <div className="hidden lg:flex items-center gap-1.5 font-mono text-xs">
-          {NAV_ITEMS.map((item) => {
+        <div className="hidden lg:flex items-center gap-7">
+          {NAV_ITEMS.filter((i) => i.href !== "/contact").map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full border-2 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink ${
-                  active
-                    ? "bg-sunny text-ink border-ink font-bold shadow-hard-sm"
-                    : "bg-cream-light dark:bg-ink-card border-ink text-ink dark:text-cream font-medium shadow-hard-sm hover:bg-sunny/40 dark:hover:bg-sunny/20 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                className={`relative py-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunny rounded ${
+                  active ? "text-cream" : "text-cream/55 hover:text-cream"
                 }`}
               >
-                <span className="text-[10px] font-bold">$ cd</span>
-                <span>{item.cmd}</span>
+                {item.label}
+                {active && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-px bg-sunny" aria-hidden="true" />
+                )}
               </Link>
             );
           })}
         </div>
 
-        {/* Right Side: Clock Chip, Theme Toggle & Mobile Menu Hamburger */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-4">
           {clock && (
-            <div
-              title="Local time in Bengaluru (IST)"
-              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm font-mono text-xs font-bold text-ink dark:text-cream">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" aria-hidden="true" />
-              <span className="tnum">
-                {clock.hh.replace(/^0/, "")}
-                <span className="animate-pulse">:</span>
-                {clock.mm} {clock.period}
-              </span>
-              <span className="opacity-40">•</span>
-              <span className="text-[11px]">BLR</span>
-            </div>
+            <span title="Local time in Bengaluru (IST)" className="hidden sm:inline tnum text-cream/45">
+              BLR {clock.hh}:{clock.mm} {clock.period}
+            </span>
           )}
-
-          <ThemeToggle />
-
+          <Link
+            href="/contact"
+            className="hidden lg:inline-flex items-center gap-2 text-cream hover:text-sunny transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunny rounded"
+          >
+            <span className="text-sunny">{"//"}</span> Book me
+            <span className="grid h-5 w-5 place-items-center rounded-full border border-cream/40 text-[9px]" aria-hidden="true">
+              ↗
+            </span>
+          </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             type="button"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
             aria-label={mobileMenuOpen ? "Close menu" : "Open navigation menu"}
-            className="lg:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-light dark:bg-ink-card border-ink border-2 shadow-hard-sm font-mono text-xs font-bold text-ink dark:text-cream hover:bg-sunny active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink"
+            className="lg:hidden inline-flex items-center gap-2 rounded-full border border-white/15 px-3.5 py-1.5 text-cream hover:border-sunny/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunny"
           >
-            <span>{mobileMenuOpen ? "✕ close" : "☰ menu"}</span>
+            {mobileMenuOpen ? "Close" : "Menu"}
           </button>
         </div>
       </div>
 
-      {/* Full-Screen Accessible Mobile Menu */}
       {mobileMenuOpen && (
         <div
           id="mobile-menu"
@@ -130,50 +122,43 @@ export function Navbar() {
           role="dialog"
           aria-modal="true"
           aria-label="Mobile Navigation"
-          className="fixed inset-0 z-50 bg-cream/95 dark:bg-ink-deep/95 backdrop-blur-md p-6 flex flex-col justify-between"
+          className="fixed inset-0 z-50 bg-ink-deep/97 backdrop-blur-md p-6 flex flex-col justify-between"
         >
-          <div className="flex items-center justify-between border-b-ink border-b-2 pb-4">
-            <span className="font-mono text-xs font-bold text-ink dark:text-cream">
-              $ menu --select
-            </span>
+          <div className="flex items-center justify-between border-b border-white/10 pb-4 font-mono text-[11px] uppercase tracking-[0.18em]">
+            <span className="text-cream/60">{"// Index"}</span>
             <button
               onClick={() => setMobileMenuOpen(false)}
               type="button"
               aria-label="Close menu"
-              className="px-3.5 py-1.5 rounded-full bg-sunny border-ink border-2 text-xs font-mono font-bold text-ink shadow-hard-sm active:translate-x-0.5 active:translate-y-0.5"
+              className="rounded-full border border-white/15 px-3.5 py-1.5 text-cream"
             >
-              ✕ [Esc]
+              Close
             </button>
           </div>
 
-          <div className="flex flex-col gap-3 my-auto">
-            {NAV_ITEMS.map((item) => {
+          <div className="flex flex-col my-auto">
+            {NAV_ITEMS.map((item, i) => {
               const active = isActive(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex items-center justify-between p-4 rounded-2xl border-ink border-2 font-mono text-lg font-bold shadow-hard ${
-                    active
-                      ? "bg-sunny text-ink"
-                      : "bg-cream-light dark:bg-ink-card text-ink dark:text-cream"
+                  className={`flex items-baseline justify-between border-b border-white/[0.07] py-3 font-poster uppercase text-5xl leading-none ${
+                    active ? "text-sunny" : "text-cream"
                   }`}
                 >
-                  <span className="flex items-center gap-2">
-                    <span className="text-sm opacity-50">$ cd</span>
-                    <span>{item.cmd}</span>
-                  </span>
-                  <span className="text-xs opacity-70 uppercase tracking-widest">
-                    {item.label}
+                  <span>{item.label}</span>
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-cream/40">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
                 </Link>
               );
             })}
           </div>
 
-          <div className="text-center font-mono text-xs text-ink/80 dark:text-cream/80 border-t border-ink/20 pt-4">
-            Akshat Gupta · Workshop Door
+          <div className="text-center font-mono text-[10px] uppercase tracking-[0.18em] text-cream/50">
+            Akshat Gupta · Bengaluru
           </div>
         </div>
       )}
